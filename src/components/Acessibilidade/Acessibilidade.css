@@ -33,7 +33,10 @@
   color: #FFD700 !important;
 }
 
-[data-theme="high-contrast"] h1,
+[data-theme="high-contrast"] h1 {
+  color: #000000 !important;
+}
+
 [data-theme="high-contrast"] h2,
 [data-theme="high-contrast"] h3,
 [data-theme="high-contrast"] p,
@@ -91,6 +94,10 @@
   color: #FFD700 !important;
 }
 
+[data-theme="high-contrast"] svg.lucide.lucide-accessibility {
+  color: #020202 !important;
+}
+
 [data-theme="high-contrast"] .shadow-lg,
 [data-theme="high-contrast"] .shadow-xl {
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.3) !important;
@@ -124,5 +131,4 @@
 
 [data-theme="high-contrast"] section {
   background-color: #1a1a1a !important;
-  border: 2px solid #FFD700 !important;
 }

@@ -1,4 +1,4 @@
-import { Search, Headset, Info, Accessibility } from 'lucide-react';
+import { Search, Headset, Info, Accessibility, HeartHandshake } from 'lucide-react';
 
 const linkOuvidoria = 'https://bomjardim1.websiteseguro.com/ouvidoria/?pagina=fale_conosco_ouvidoria.php';
 const linkTransparencia = 'https://bomjardim1.websiteseguro.com/e-sic/';
@@ -48,7 +48,7 @@ export function BarraTopo() {
             className='text-black font-semibold flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2 py-1'
             aria-label="Ir para menu de acessibilidade"
           >
-            <Accessibility size={16} aria-hidden="true" />
+            <HeartHandshake size={16} aria-hidden="true" />
             Acessibilidade
           </a>
         </li>
