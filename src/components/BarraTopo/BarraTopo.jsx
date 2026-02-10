@@ -1,5 +1,10 @@
 import { Search, Headset, Info, Accessibility } from 'lucide-react';
 
+const linkOuvidoria = 'https://bomjardim1.websiteseguro.com/ouvidoria/?pagina=fale_conosco_ouvidoria.php';
+const linkTransparencia = 'https://bomjardim1.websiteseguro.com/e-sic/';
+const linkAcessibilidade = 'https://www.bomjardim.rj.gov.br/e-sic/?pagina=../acessibilidade.php';
+const linkPesquisa = '#pesquisa';
+
 export function BarraTopo() {
   return (
     <nav 
@@ -16,7 +21,8 @@ export function BarraTopo() {
       <ul className='flex flex-row gap-6 p-3 pr-10'>
         <li>
           <a 
-            href='/ouvidoria' 
+            href={linkOuvidoria}
+            target='_blank'
             className='text-black font-semibold flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2 py-1'
             aria-label="Acessar página da Ouvidoria"
           >
@@ -26,7 +32,8 @@ export function BarraTopo() {
         </li>
         <li>
           <a 
-            href='/transparencia' 
+            href={linkTransparencia}
+            target='_blank'
             className='text-black font-semibold flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2 py-1'
             aria-label="Acessar Portal da Transparência"
           >
@@ -36,7 +43,8 @@ export function BarraTopo() {
         </li>
         <li>
           <a 
-            href='#acessibilidade' 
+            href={linkAcessibilidade}
+            target='_blank'
             className='text-black font-semibold flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2 py-1'
             aria-label="Ir para menu de acessibilidade"
           >
