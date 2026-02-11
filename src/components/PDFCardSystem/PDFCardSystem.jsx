@@ -1,216 +1,182 @@
-import { useState, useEffect } from 'react';
-import { FileText, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
+import { useState, useEffect } from "react";
+import { FileText, X, ChevronLeft, ChevronRight, Trash } from "lucide-react";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 
-import { setPdf, getPdf } from "../../utils/storage";
+import { setPdf, getPdf, removePdf } from "../../utils/storage";
 import { PDF } from "../../utils/pdf";
-import { extractTextFromPDF } from "../../utils/pdfUtils";
-import { enrichPdf } from '../../utils/pdfUtils';
-import { Pesquisa } from '../Pesquisa/Pesquisa';
+import { extractTextFromPDF, enrichPdf } from "../../utils/pdfUtils";
+import { Pesquisa } from "../Pesquisa/Pesquisa";
 
-import pdfWorker from 'pdfjs-dist/build/pdf.worker.min?url';
+import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
-export function PDFCardSystem() {
+export function PDFCardSystem({ mode = "public" }) {
   const [pdfs, setPdfs] = useState([]);
   const [filteredPdfs, setFilteredPdfs] = useState([]);
   const [selectedPDF, setSelectedPDF] = useState(null);
-  const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastEdition, setLastEdition] = useState(null);
-
-  useEffect(() => {
-    getPdf().then(pdfs => {
-      if (pdfs.length) setLastEdition(pdfs[pdfs.length - 1].edicao);
-    });
-  }, []);
+  const [numPages, setNumPages] = useState(null);
+  const [lastEdition, setLastEdition] = useState(0);
 
   useEffect(() => {
     (async () => {
       const all = await getPdf();
+      if (all.length) setLastEdition(all[all.length - 1].edicao);
       const enriched = all.map(enrichPdf);
       setPdfs(enriched);
       setFilteredPdfs(enriched);
     })();
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = selectedPDF ? 'hidden' : '';
-    return () => (document.body.style.overflow = '');
-  }, [selectedPDF]);
-
   async function handleFileUpload(event) {
     const files = Array.from(event.target.files);
-    const semana = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
-    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-
-    let edicaoAtual = lastEdition ?? 0;
+    let edicao = lastEdition;
 
     for (const file of files) {
-      if (file.type !== 'application/pdf') continue;
-      edicaoAtual++;
+      if (file.type !== "application/pdf") continue;
+      edicao++;
 
-      const reader = new FileReader();
       const dataUrl = await new Promise(resolve => {
+        const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.readAsDataURL(file);
       });
 
-      const textoExtraido = await extractTextFromPDF(dataUrl);
-      const data = new Date(
-        new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' })
+      const texto = await extractTextFromPDF(dataUrl);
+      const data = new Date();
+
+      const pdf = new PDF(
+        file.name,
+        `Edição Nº ${edicao}`,
+        null,
+        texto,
+        edicao,
+        data,
+        data.getMonth() + 1,
+        data.getFullYear()
       );
 
-      const descricao = `Edição Nº ${edicaoAtual} de ${semana[data.getDay()]}, ${data.getDate()} de ${meses[data.getMonth()]} de ${data.getFullYear()}`;
-
-      const pdf = new PDF(file.name, descricao, null, textoExtraido, edicaoAtual, data, data.getMonth() + 1, data.getFullYear());
       pdf.url = dataUrl;
       await setPdf(pdf);
     }
-
-    setLastEdition(edicaoAtual);
 
     const all = await getPdf();
     const enriched = all.map(enrichPdf);
     setPdfs(enriched);
     setFilteredPdfs(enriched);
+    setLastEdition(edicao);
   }
 
-  function handleSearch(q, mes = '', ano = '') {
-    const query = (q || '').toLowerCase().trim();
-    if (!query && !mes && !ano) return setFilteredPdfs(pdfs);
+  async function removerPdf(id) {
+    if (!window.confirm("Deseja remover este PDF?")) return;
+    await removePdf(id);
+    const all = (await getPdf()).map(enrichPdf);
+    setPdfs(all);
+    setFilteredPdfs(all);
+    setSelectedPDF(null);
+  }
 
+  function handleSearch(q) {
+    const query = (q || "").toLowerCase();
     setFilteredPdfs(
-      pdfs.filter(p =>
-        ((p.titulo || '').toLowerCase().includes(query) ||
-         (p.descricao || '').toLowerCase().includes(query) ||
-         (p.textoExtraido || '').toLowerCase().includes(query)) &&
-        (mes === '' || p.mes.toString() == mes) &&
-        (ano === '' || p.ano.toString() == ano)
+      pdfs.filter(
+        p =>
+          p.titulo.toLowerCase().includes(query) ||
+          p.descricao.toLowerCase().includes(query) ||
+          p.textoExtraido.toLowerCase().includes(query)
       )
     );
   }
 
   return (
-    <main className="min-h-screen p-8" role="main" aria-label="Sistema de documentos em PDF">
-      <div className="max-w-7xl mx-auto">
-        <Pesquisa onSearch={handleSearch} />
+    <main className="p-8 max-w-7xl mx-auto">
 
-        {filteredPdfs.length === 0 && (
-          <div
-            className="text-gray-600 text-center text-xl"
-            role="status"
-            aria-live="polite"
+      <Pesquisa onSearch={handleSearch} />
+
+      {mode === "admin" && (
+        <label className="bg-[#0a2a43] text-white px-6 py-3 cursor-pointer inline-block mb-8">
+          <input
+            type="file"
+            multiple
+            accept="application/pdf"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+          Adicionar PDF
+        </label>
+      )}
+
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {filteredPdfs.map(pdf => (
+          <article
+            key={pdf.id}
+            className="bg-[#fffdfa] border-l-8 border-[#0a2a43] p-8 shadow"
           >
-            Nenhum PDF encontrado.
-          </div>
-        )}
+            <FileText size={36} className="mb-4 text-[#0a2a43]" />
+            <p>{pdf.descricao}</p>
 
-        <section
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-          aria-label="Lista de PDFs disponíveis"
-        >
-          {filteredPdfs.map(pdf => (
-            <article
-              key={pdf.id}
-              className="bg-[#fffdfa] border-l-8 border-[#0a2a43] border border-gray-400 p-8 shadow-sm"
+            <button
+              onClick={() => setSelectedPDF(pdf)}
+              className="mt-6 bg-[#0a2a43] text-white px-6 py-3 uppercase"
             >
-              <FileText
-                className="text-[#0a2a43] mb-4"
-                size={36}
-                aria-hidden="true"
-              />
+              Visualizar
+            </button>
 
-              <p className="font-serif text-lg leading-relaxed">
-                {pdf.descricao}
-              </p>
-
+            {mode === "admin" && (
               <button
-                onClick={() => setSelectedPDF(pdf)}
-                className="mt-6 bg-[#0a2a43] text-white px-8 py-3 uppercase tracking-[0.2em] text-sm"
-                aria-label={`Visualizar ${pdf.descricao}`}
+                onClick={() => removerPdf(pdf.id)}
+                className="mt-3 bg-red-600 text-white px-6 py-2 flex gap-2 items-center"
               >
-                Visualizar
+                <Trash size={16} /> Remover
               </button>
-            </article>
-          ))}
-        </section>
-      </div>
+            )}
+          </article>
+        ))}
+      </section>
 
       {selectedPDF && (
-        <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="titulo-modal-pdf"
-        >
-          <div className="bg-[#fdfcf9] w-[88vw] h-[92vh] border-4 border-[#0a2a43] shadow-2xl flex flex-col">
+        <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50">
+          <div className="bg-[#fdfcf9] w-[90vw] h-[92vh] flex flex-col border-4 border-[#0a2a43]">
             <header className="flex justify-between px-6 py-4 border-b">
-              <h2
-                id="titulo-modal-pdf"
-                className="font-[Cinzel] uppercase tracking-widest"
-              >
-                Leitura Oficial
-              </h2>
-              <button
-                onClick={() => setSelectedPDF(null)}
-                aria-label="Fechar visualização do PDF"
-              >
-                <X aria-hidden="true" />
+              <h2>Leitura Oficial</h2>
+              <button onClick={() => setSelectedPDF(null)}>
+                <X />
               </button>
             </header>
 
-            <div
-              className="flex-1 bg-[#e9e6e1] flex justify-center py-12 overflow-auto"
-              aria-label="Visualizador de PDF"
-            >
-              <Document file={selectedPDF.blobUrl}>
-                <Page
-                  pageNumber={currentPage}
-                  scale={1.6}
-                  aria-label={`Página ${currentPage} de ${numPages || '?'}`}
-                />
+            <div className="flex-1 flex justify-center overflow-auto bg-[#e9e6e1] py-10">
+              <Document
+                file={selectedPDF.blobUrl}
+                onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+              >
+                <Page pageNumber={currentPage} scale={1.6} />
               </Document>
             </div>
 
-            <nav
-              className="flex justify-between px-6 py-4 border-t"
-              aria-label="Navegação entre páginas do PDF"
-            >
-              <button
-                onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
-                className="bg-[#0a2a43] text-white px-6 py-2 uppercase tracking-wide"
-                aria-label="Página anterior"
-              >
-                <ChevronLeft aria-hidden="true" /> Anterior
+            <nav className="flex justify-between px-6 py-4 border-t">
+              <button onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}>
+                <ChevronLeft /> Anterior
               </button>
 
-              <div className="flex flex-col items-center gap-2">
-                <span
-                  className="font-medium text-center uppercase tracking-wide"
-                  aria-live="polite"
-                >
-                  Página {currentPage} de {numPages || '?'}
-                </span>
-                <button
-                  onClick={() => window.open(selectedPDF.blobUrl, '_blank')}
-                  className="bg-[#0a2a43] text-white px-6 py-2 uppercase tracking-wide"
-                  aria-label="Abrir PDF em nova aba para impressão"
-                >
-                  Imprimir 🖨️
-                </button>
-              </div>
+              <span>
+                Página {currentPage} de {numPages}
+              </span>
 
-              <button
-                onClick={() => setCurrentPage(p => Math.min(p + 1, numPages))}
-                className="bg-[#0a2a43] text-white px-6 py-2 uppercase tracking-wide"
-                aria-label="Próxima página"
-              >
-                Próxima <ChevronRight aria-hidden="true" />
+              <button onClick={() => setCurrentPage(p => Math.min(p + 1, numPages))}>
+                Próxima <ChevronRight />
               </button>
             </nav>
+
+            {mode === "admin" && (
+              <button
+                onClick={() => removerPdf(selectedPDF.id)}
+                className="bg-red-700 text-white py-3"
+              >
+                Excluir PDF
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -9,7 +9,7 @@ export function Login() {
     const user = e.target.user.value;
     const password = e.target.password.value;
 
-    if (user === "admin@prefeitura.com" && password === "123456") {
+    if (user === "teste" && password === "123") {
       localStorage.setItem("logado", "true");
       navigate("/pdfs");
     } else {
@@ -18,34 +18,62 @@ export function Login() {
   }
 
   return (
-    <form
-      onSubmit={handleLogin}
-      className="flex flex-col items-center justify-center h-screen gap-4"
+    <main
+      className="min-h-screen flex items-center justify-center bg-[#0a2a43]"
+      role="main"
     >
-      <h1 className="text-3xl font-bold">Login</h1>
-
-      <input
-        type="text"
-        name="user"
-        placeholder="Usuário"
-        className="border p-2 rounded"
-        required
-      />
-
-      <input
-        type="password"
-        name="password"
-        placeholder="Senha"
-        className="border p-2 rounded"
-        required
-      />
-
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+      <form
+        onSubmit={handleLogin}
+        aria-labelledby="login-title"
+        className="bg-white border border-gray-300 rounded-xl shadow-xl p-10 w-full max-w-md flex flex-col gap-5"
       >
-        Entrar
-      </button>
-    </form>
+        <h1
+          id="login-title"
+          className="text-3xl font-bold text-center text-[#0a2a43]"
+        >
+          Acesso ao Sistema
+        </h1>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="user" className="font-medium">
+            Usuário
+          </label>
+          <input
+            id="user"
+            type="text"
+            name="user"
+            placeholder="Usuario"
+            autoComplete="username"
+            aria-required="true"
+            className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="password" className="font-medium">
+            Senha
+          </label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Senha"
+            autoComplete="current-password"
+            aria-required="true"
+            className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          aria-label="Entrar no sistema"
+          className="mt-4 bg-blue-600 text-white py-3 rounded font-bold tracking-wide hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
+          Entrar
+        </button>
+      </form>
+    </main>
   );
 }
