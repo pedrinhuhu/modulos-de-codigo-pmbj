@@ -23,8 +23,13 @@ export function PDFCardSystem({ mode = "public" }) {
   useEffect(() => {
     (async () => {
       const all = await getPdf();
+
       if (all.length) setLastEdition(all[all.length - 1].edicao);
-      const enriched = all.map(enrichPdf);
+
+      const enriched = all
+        .map(enrichPdf)
+        .sort((a, b) => b.createdAt - a.createdAt); // 🔥 MAIS NOVO PRIMEIRO
+
       setPdfs(enriched);
       setFilteredPdfs(enriched);
     })();
@@ -63,16 +68,27 @@ export function PDFCardSystem({ mode = "public" }) {
     }
 
     const all = await getPdf();
-    const enriched = all.map(enrichPdf);
+    const enriched = all
+      .map(enrichPdf)
+      .sort((a, b) => b.createdAt - a.createdAt); // 🔥 MAIS NOVO PRIMEIRO
+
     setPdfs(enriched);
     setFilteredPdfs(enriched);
     setLastEdition(edicao);
+
+    // 🔴 ESSENCIAL
+    event.target.value = "";
   }
 
   async function removerPdf(id) {
     if (!window.confirm("Deseja remover este PDF?")) return;
+
     await removePdf(id);
-    const all = (await getPdf()).map(enrichPdf);
+
+    const all = (await getPdf())
+      .map(enrichPdf)
+      .sort((a, b) => b.createdAt - a.createdAt); // 🔥 MANTÉM ORDEM
+
     setPdfs(all);
     setFilteredPdfs(all);
     setSelectedPDF(null);
@@ -80,12 +96,13 @@ export function PDFCardSystem({ mode = "public" }) {
 
   function handleSearch(q) {
     const query = (q || "").toLowerCase();
+
     setFilteredPdfs(
       pdfs.filter(
         p =>
-          p.titulo.toLowerCase().includes(query) ||
-          p.descricao.toLowerCase().includes(query) ||
-          p.textoExtraido.toLowerCase().includes(query)
+          (p.titulo || "").toLowerCase().includes(query) ||
+          (p.descricao || "").toLowerCase().includes(query) ||
+          (p.textoExtraido || "").toLowerCase().includes(query)
       )
     );
   }
@@ -115,10 +132,23 @@ export function PDFCardSystem({ mode = "public" }) {
             className="bg-[#fffdfa] border-l-8 border-[#0a2a43] p-8 shadow"
           >
             <FileText size={36} className="mb-4 text-[#0a2a43]" />
-            <p>{pdf.descricao}</p>
+
+            {/* ✅ EDIÇÃO + DATA DE UPLOAD */}
+            <p className="font-medium">
+              Edição Nº {pdf.edicao} de{" "}
+              {new Date(pdf.createdAt).toLocaleDateString("pt-BR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+              })}
+            </p>
 
             <button
-              onClick={() => setSelectedPDF(pdf)}
+              onClick={() => {
+                setSelectedPDF(pdf);
+                setCurrentPage(1);
+              }}
               className="mt-6 bg-[#0a2a43] text-white px-6 py-3 uppercase"
             >
               Visualizar
