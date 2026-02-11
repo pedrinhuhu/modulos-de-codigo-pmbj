@@ -1,52 +1,70 @@
-/* Alto Contraste */
-[data-theme="high-contrast"] {
+/* ===============================
+   ALTO CONTRASTE – WCAG 2.1 AA+
+   Compatível com Tailwind + React
+   =============================== */
+
+[data-theme="high-contrast"],
+[data-theme="high-contrast"] body,
+[data-theme="high-contrast"] main {
   background-color: #000 !important;
+  color: #FFD700 !important;
 }
 
-[data-theme="high-contrast"] main,
-[data-theme="high-contrast"] body {
-  background-color: #000 !important;
-}
-
-[data-theme="high-contrast"] .bg-gray-100,
+/* ---------- Fundos ---------- */
+[data-theme="high-contrast"] .bg-white,
 [data-theme="high-contrast"] .bg-gray-50,
-[data-theme="high-contrast"] .bg-white {
+[data-theme="high-contrast"] .bg-gray-100,
+[data-theme="high-contrast"] .bg-gray-200,
+[data-theme="high-contrast"] .bg-slate-50,
+[data-theme="high-contrast"] .bg-slate-100,
+[data-theme="high-contrast"] .bg-neutral-50 {
   background-color: #1a1a1a !important;
 }
 
-[data-theme="high-contrast"] .bg-blue-600,
+/* Fundos primários (botões / destaques) */
 [data-theme="high-contrast"] .bg-blue-500,
-[data-theme="high-contrast"] .bg-blue-700 {
-  background-color: #FFD700 !important;
-  color: #000 !important;
-}
-
+[data-theme="high-contrast"] .bg-blue-600,
+[data-theme="high-contrast"] .bg-blue-700,
 [data-theme="high-contrast"] .bg-green-600 {
   background-color: #FFD700 !important;
   color: #000 !important;
 }
 
-[data-theme="high-contrast"] .text-white,
-[data-theme="high-contrast"] .text-black,
-[data-theme="high-contrast"] .text-gray-600,
-[data-theme="high-contrast"] .text-blue-600 {
-  color: #FFD700 !important;
-}
-
-[data-theme="high-contrast"] h1 {
-  color: #000000 !important;
-}
-
+/* ---------- Texto ---------- */
+[data-theme="high-contrast"] h1,
 [data-theme="high-contrast"] h2,
 [data-theme="high-contrast"] h3,
+[data-theme="high-contrast"] h4,
+[data-theme="high-contrast"] h5,
+[data-theme="high-contrast"] h6,
 [data-theme="high-contrast"] p,
 [data-theme="high-contrast"] span,
 [data-theme="high-contrast"] li,
 [data-theme="high-contrast"] a,
-[data-theme="high-contrast"] label {
+[data-theme="high-contrast"] label,
+[data-theme="high-contrast"] strong {
   color: #FFD700 !important;
 }
 
+/* Neutraliza textos escuros do Tailwind */
+[data-theme="high-contrast"] .text-black,
+[data-theme="high-contrast"] .text-gray-600,
+[data-theme="high-contrast"] .text-gray-700,
+[data-theme="high-contrast"] .text-gray-800,
+[data-theme="high-contrast"] .text-slate-700,
+[data-theme="high-contrast"] .text-blue-600 {
+  color: #FFD700 !important;
+}
+
+/* Links */
+[data-theme="high-contrast"] a {
+  text-decoration: underline;
+}
+[data-theme="high-contrast"] a:hover {
+  opacity: 0.85;
+}
+
+/* ---------- Bordas ---------- */
 [data-theme="high-contrast"] .border,
 [data-theme="high-contrast"] .border-b,
 [data-theme="high-contrast"] .border-t,
@@ -54,81 +72,85 @@
   border-color: #FFD700 !important;
 }
 
-[data-theme="high-contrast"] nav {
-  background-color: #000 !important;
-  border-bottom: 2px solid #FFD700 !important;
-}
-
-[data-theme="high-contrast"] header {
-  background-color: #000 !important;
-  border-bottom: 4px solid #FFD700 !important;
-}
-
+/* ---------- Navegação ---------- */
+[data-theme="high-contrast"] nav,
+[data-theme="high-contrast"] header,
 [data-theme="high-contrast"] footer {
   background-color: #000 !important;
-  border-top: 4px solid #FFD700 !important;
-}
-
-[data-theme="high-contrast"] input {
-  background-color: #000 !important;
-  color: #FFD700 !important;
   border-color: #FFD700 !important;
 }
 
-[data-theme="high-contrast"] input::placeholder {
-  color: #997700 !important;
+/* ---------- Inputs ---------- */
+[data-theme="high-contrast"] input,
+[data-theme="high-contrast"] textarea,
+[data-theme="high-contrast"] select {
+  background-color: #000 !important;
+  color: #FFD700 !important;
+  border: 2px solid #FFD700 !important;
 }
 
+[data-theme="high-contrast"] input::placeholder,
+[data-theme="high-contrast"] textarea::placeholder {
+  color: #bfa400 !important;
+}
+
+/* ---------- Botões ---------- */
 [data-theme="high-contrast"] button:not(:disabled) {
   background-color: #FFD700 !important;
   color: #000 !important;
-  border-color: #FFD700 !important;
+  border: 2px solid #FFD700 !important;
+}
+
+[data-theme="high-contrast"] button:hover:not(:disabled) {
+  opacity: 0.85;
 }
 
 [data-theme="high-contrast"] button:disabled {
-  background-color: #666 !important;
-  color: #333 !important;
+  background-color: #555 !important;
+  color: #222 !important;
 }
 
+/* Estado toggle */
+[data-theme="high-contrast"] button[aria-pressed="true"] {
+  outline: 3px solid #FFD700 !important;
+}
+
+/* ---------- Foco (ESSENCIAL) ---------- */
+[data-theme="high-contrast"] *:focus-visible {
+  outline: 3px solid #FFD700 !important;
+  outline-offset: 3px;
+}
+
+/* ---------- SVG / Ícones ---------- */
 [data-theme="high-contrast"] svg {
   color: #FFD700 !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
 
-[data-theme="high-contrast"] svg.lucide.lucide-accessibility {
-  color: #020202 !important;
+/* Ícone de acessibilidade invertido */
+[data-theme="high-contrast"] svg.lucide-accessibility {
+  color: #000 !important;
 }
 
-[data-theme="high-contrast"] .shadow-lg,
-[data-theme="high-contrast"] .shadow-xl {
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3) !important;
+/* ---------- Cards / Layout ---------- */
+[data-theme="high-contrast"] aside,
+[data-theme="high-contrast"] article,
+[data-theme="high-contrast"] section {
+  background-color: #1a1a1a !important;
+  border: 2px solid #FFD700 !important;
 }
 
-[data-theme="high-contrast"] .bg-black\/60 {
+/* ---------- Modais / Overlays ---------- */
+[data-theme="high-contrast"] .bg-black\/60,
+[data-theme="high-contrast"] .fixed,
+[data-theme="high-contrast"] .absolute {
   background-color: rgba(0, 0, 0, 0.95) !important;
 }
 
-[data-theme="high-contrast"] button[aria-pressed="true"] {
-  background-color: #FFD700 !important;
-  color: #000 !important;
-  border: 2px solid #FFD700 !important;
-}
-
-[data-theme="high-contrast"] button[aria-pressed="false"]:not(.bg-black) {
-  background-color: #FFD700 !important;
-  color: #000 !important;
-  opacity: 0.7;
-}
-
-[data-theme="high-contrast"] aside {
-  background-color: #1a1a1a !important;
-  border: 2px solid #FFD700 !important;
-}
-
-[data-theme="high-contrast"] article {
-  background-color: #1a1a1a !important;
-  border: 2px solid #FFD700 !important;
-}
-
-[data-theme="high-contrast"] section {
-  background-color: #1a1a1a !important;
+/* ---------- Sombras ---------- */
+[data-theme="high-contrast"] .shadow,
+[data-theme="high-contrast"] .shadow-lg,
+[data-theme="high-contrast"] .shadow-xl {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.35) !important;
 }
