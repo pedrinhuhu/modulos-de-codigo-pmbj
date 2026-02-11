@@ -15,7 +15,8 @@ export function Cabecalho() {
           className="w-40 h-30 pl-10"
         />
       </a>
-        <h1 className="text-5xl font-bold uppercase text-center">
+        <h1 className="text-5xl font-bold uppercase text-center pr-19" 
+            aria-label="Título do site: Diário Oficial">
           Diário Oficial
         </h1>
       <div className="w-12" aria-hidden="true"></div>

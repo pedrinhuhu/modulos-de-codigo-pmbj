@@ -8,6 +8,7 @@ import { Rodape } from './components/Rodape/Rodape';
 import { Acessibilidade } from './components/Acessibilidade/Acessibilidade';
 import { Login } from './components/TelaUser/Login';
 import { TelaPDFs } from './components/TelaUser/TelaPDFs';
+import { RotaPrivada } from './routes/RotaPrivada';
 import './App.css';
 
 export function App() {
@@ -19,7 +20,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<PDFCardSystem />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/pdfs" element={<TelaPDFs />} />
+        <Route path="/pdfs" element={<RotaPrivada><TelaPDFs /></RotaPrivada>}/>
       </Routes>
       <Acessibilidade />
       <Rodape />
