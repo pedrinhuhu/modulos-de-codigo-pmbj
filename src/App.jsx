@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom'
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
 import { SkipNavigation } from './components/SkipNavigation/SkipNavigation';
 import { BarraTopo } from './components/BarraTopo/BarraTopo';
@@ -9,19 +10,19 @@ import { Login } from './components/TelaUser/Login';
 import { TelaPDFs } from './components/TelaUser/TelaPDFs';
 import './App.css';
 
-function App() {
+export function App() {
   return (
     <AccessibilityProvider>
       <SkipNavigation />
       <BarraTopo />
       <Cabecalho />
-      <PDFCardSystem />
-      <Rodape />
+      <Routes>
+        <Route path="/" element={<PDFCardSystem />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/pdfs" element={<TelaPDFs />} />
+      </Routes>
       <Acessibilidade />
-      <Login />
-      <TelaPDFs />
+      <Rodape />
     </AccessibilityProvider>
   );
 }
-
-export default App;

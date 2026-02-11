@@ -8,7 +8,7 @@ const linkPesquisa = '#pesquisa';
 export function BarraTopo() {
   return (
     <nav 
-      className="bg-gray-100 flex items-center justify-between backdrop-blur-sm px-4 py-2 shadow-lg"
+      className="bg-gray-100 flex items-center justify-between backdrop-blur-sm px-4 py-0.5 shadow-lg"
       aria-label="Navegação principal"
     >
       <a 
