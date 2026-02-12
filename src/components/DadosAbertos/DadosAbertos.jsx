@@ -12,7 +12,7 @@ export function DadosAbertos() {
           <button
             key={t}
             onClick={() => exportPDFs(t)}
-            className="bg-[#c9a227] text-black px-10 py-4 uppercase tracking-[0.2em] text-sm font-bold border border-black"
+            className="bg-[#c9a227] text-black px-10 py-4 uppercase tracking-[0.2em] text-sm font-bold border border-black cursor-pointer hover:bg-[#0a2a43] hover:text-white"
             aria-label={`Exportar dados em formato ${t}`}
           >
             Exportar {t}

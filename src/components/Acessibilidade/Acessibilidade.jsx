@@ -23,7 +23,7 @@ export function Acessibilidade() {
     <>
       {/* Botão flutuante */}
       <button
-        className="fixed bottom-6 right-6 flex flex-col items-center justify-center border-4 rounded-full bg-blue-600 border-white text-white w-16 h-16 z-50 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg"
+        className="fixed bottom-6 right-6 flex flex-col items-center justify-center border-4 rounded-full bg-blue-600 border-white text-white w-16 h-16 z-50 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg cursor-pointer"
         onClick={() => setShowMenu(v => !v)}
         aria-label={showMenu ? "Fechar menu de acessibilidade" : "Abrir menu de acessibilidade"}
         aria-expanded={showMenu}
@@ -49,12 +49,12 @@ export function Acessibilidade() {
 
           {/* Tamanho da fonte */}
           <section
-            className="mb-5"
+            className="mb-5 "
             aria-labelledby="font-size-label"
           >
             <h3
               id="font-size-label"
-              className="block text-sm font-medium mb-2"
+              className="block text-sm font-medium mb-2 "
             >
               Tamanho da fonte
             </h3>
@@ -62,7 +62,7 @@ export function Acessibilidade() {
             <div className="flex gap-2 items-center">
               <button
                 onClick={decreaseFontSize}
-                className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-1"
+                className="cursor-pointer px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-1"
                 aria-label="Diminuir tamanho da fonte"
               >
                 <Minus size={14} aria-hidden="true" /> A
@@ -79,7 +79,7 @@ export function Acessibilidade() {
 
               <button
                 onClick={increaseFontSize}
-                className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-1"
+                className="cursor-pointer px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-1"
                 aria-label="Aumentar tamanho da fonte"
               >
                 <Plus size={14} aria-hidden="true" /> A
@@ -87,7 +87,7 @@ export function Acessibilidade() {
 
               <button
                 onClick={() => setFontSize(16)}
-                className={`px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                className={`hover:bg-[#c9a227] hover:text-white cursor-pointer px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 ${
                   fontSize === 16
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 hover:bg-gray-300'
@@ -115,7 +115,7 @@ export function Acessibilidade() {
             <div className="flex gap-2">
               <button
                 onClick={() => handleTheme("default")}
-                className={`px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                className={`hover:bg-[#c9a227] hover:text-white cursor-pointer px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 ${
                   !highContrast
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 hover:bg-gray-300'
@@ -128,7 +128,7 @@ export function Acessibilidade() {
 
               <button
                 onClick={() => handleTheme("high-contrast")}
-                className={`px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
+                className={`hover:bg-[#c9a227] hover:text-white cursor-pointer px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
                   highContrast
                     ? 'bg-black text-yellow-400 border-2 border-yellow-400'
                     : 'bg-black text-yellow-400 hover:bg-gray-900'

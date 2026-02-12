@@ -103,13 +103,13 @@ export function PDFCardSystem({ mode = "public" }) {
       <Pesquisa onSearch={handleSearch} />
 
       {mode === "admin" && (
-        <label className="bg-[#0a2a43] text-white px-6 py-3 cursor-pointer inline-block mb-8">
+        <label className="bg-[#0a2a43] text-white px-6 py-3 cursor-pointer inline-block mb-8 hover:bg-[#c9a227] hover:text-white">
           <input
             type="file"
             multiple
             accept="application/pdf"
             onChange={handleFileUpload}
-            className="hidden"
+            className="hidden cursor-pointer "
           />
           Adicionar PDF
         </label>
@@ -143,7 +143,7 @@ export function PDFCardSystem({ mode = "public" }) {
                 setSelectedPDF(pdf);
                 setCurrentPage(1);
               }}
-              className="mt-6 bg-[#0a2a43] text-white px-6 py-3 uppercase"
+              className="mt-6 bg-[#0a2a43] text-white px-6 py-3 uppercase cursor-pointer hover:bg-[#c9a227] hover:text-white"
             >
               Visualizar
             </button>
