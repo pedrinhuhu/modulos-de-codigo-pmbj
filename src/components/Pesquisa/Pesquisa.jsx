@@ -7,11 +7,11 @@ export function Pesquisa({ onSearch }) {
 
   return (
     <section
-      className="mb-16 bg-[#fffdfa] border border-gray-400 p-10 shadow-inner"
+      className="mb-16 bg-white border border-gray-200 p-10 shadow-sm rounded-lg"
       aria-label="Formulário de pesquisa oficial"
     >
       <h2
-        className="text-2xl font-[Cinzel] uppercase tracking-[0.25em] mb-8 text-[#0a2a43] border-b pb-4 "
+        className="text-2xl font-sans font-semibold tracking-normal mb-8 text-[#1351B4] border-b border-gray-200 pb-4"
         id="titulo-pesquisa"
       >
         Pesquisa
@@ -29,7 +29,7 @@ export function Pesquisa({ onSearch }) {
           placeholder="Ano"
           value={ano}
           onChange={(e) => setAno(e.target.value)}
-          className="flex-1 px-5 py-4 border border-gray-500 bg-[#fdfcf9] font-serif cursor-pointer"
+          className="flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
           aria-label="Filtrar por ano"
           min="1900"
           max="2100"
@@ -43,7 +43,7 @@ export function Pesquisa({ onSearch }) {
           id="pesquisa-mes"
           value={mes}
           onChange={(e) => setMes(e.target.value)}
-          className="flex-1 px-5 py-4 border border-gray-500 bg-[#fdfcf9] font-serif cursor-pointer"
+          className="flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
           aria-label="Filtrar por mês"
         >
           <option value="">Todos</option>
@@ -65,7 +65,7 @@ export function Pesquisa({ onSearch }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Pesquisar no conteúdo dos atos"
-          className="flex-1 px-5 py-4 border border-gray-500 bg-[#fdfcf9] font-serif cursor-pointer"
+          className="flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
           aria-label="Campo de pesquisa por texto"
         />
 
@@ -73,7 +73,7 @@ export function Pesquisa({ onSearch }) {
         <button
           type="button"
           onClick={() => onSearch(query, mes, ano)}
-          className="bg-[#0a2a43] text-white px-10 py-4 uppercase tracking-[0.2em] text-sm border border-[#c9a227] cursor-pointer hover:bg-[#c9a227] hover:text-white"
+          className="bg-[#1351B4] text-white px-8 py-3 tracking-normal text-sm font-semibold rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
           aria-label="Executar pesquisa"
         >
           Pesquisar
