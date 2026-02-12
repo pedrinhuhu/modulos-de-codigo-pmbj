@@ -3,7 +3,7 @@ import { FileText, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-
+import { DadosAbertos } from "../DadosAbertos/DadosAbertos";
 import { setPdf, getPdf } from "../../utils/storage";
 import { PDF } from "../../utils/pdf";
 import { extractTextFromPDF, enrichPdf } from "../../utils/pdfUtils";
@@ -20,7 +20,7 @@ export function PDFCardSystem({ mode = "public" }) {
   const [numPages, setNumPages] = useState(null);
   const [lastEdition, setLastEdition] = useState(0);
 
-  // 🔹 Carregamento inicial
+  //Carregamento inicial
   useEffect(() => {
     (async () => {
       const all = await getPdf();
@@ -38,7 +38,7 @@ export function PDFCardSystem({ mode = "public" }) {
     })();
   }, []);
 
-  // 🔹 Upload de PDFs
+  //Upload de PDFs
   async function handleFileUpload(event) {
     const files = Array.from(event.target.files);
     let edicao = lastEdition;
@@ -74,7 +74,7 @@ export function PDFCardSystem({ mode = "public" }) {
     const all = await getPdf();
     const enriched = all
       .map(enrichPdf)
-      .sort((a, b) => b.edicao - a.edicao); // ✅ MANTÉM A ORDEM
+      .sort((a, b) => b.edicao - a.edicao); //MANTÉM A ORDEM
 
     setPdfs(enriched);
     setFilteredPdfs(enriched);
@@ -83,7 +83,7 @@ export function PDFCardSystem({ mode = "public" }) {
     event.target.value = "";
   }
 
-  // 🔹 Pesquisa
+  //Pesquisa
   function handleSearch(q) {
     const query = (q || "").toLowerCase();
 
@@ -99,6 +99,7 @@ export function PDFCardSystem({ mode = "public" }) {
 
   return (
     <main className="p-8 max-w-7xl mx-auto">
+      <DadosAbertos />
       <Pesquisa onSearch={handleSearch} />
 
       {mode === "admin" && (
@@ -122,12 +123,12 @@ export function PDFCardSystem({ mode = "public" }) {
           >
             <FileText size={36} className="mb-4 text-[#0a2a43]" />
 
-            {/* ✅ EDIÇÃO */}
+            {/*EDIÇÃO */}
             <p className="font-semibold text-lg text-[#0a2a43]">
               Edição Nº {pdf.edicao}
             </p>
 
-            {/* ✅ DATA */}
+            {/*DATA */}
             <p className="text-sm text-gray-600 mt-1 capitalize">
               {new Date(pdf.createdAt).toLocaleDateString("pt-BR", {
                 weekday: "long",
