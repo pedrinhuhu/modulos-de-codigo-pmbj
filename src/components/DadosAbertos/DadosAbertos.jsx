@@ -3,19 +3,19 @@ import {getPdf} from '../../utils/storage';
 
 export function DadosAbertos() {
   return (
-    <section className="mb-3 bg-[#fffdfa] border border-gray-400 p-10 shadow-inner justify-center items-center" aria-label="Seção de Dados Abertos">
-      <h2 className="text-2xl font-[Cinzel] uppercase tracking-[0.25em] mb-8 text-[#0a2a43] border-b pb-4 " aria-label="Seção de Dados Abertos">
+    <section className="mb-3 bg-white border border-gray-200 p-10 shadow-sm rounded-lg justify-center items-center" aria-label="Seção de Dados Abertos">
+      <h2 className="text-2xl font-sans font-semibold tracking-normal mb-8 text-[#1351B4] border-b border-gray-200 pb-4" aria-label="Seção de Dados Abertos">
         Dados Abertos
       </h2>
-      <div className="flex gap-10">
+      <div className="flex gap-4">
         {['json','csv','txt'].map(t => (
           <button
             key={t}
             onClick={() => exportPDFs(t)}
-            className="bg-[#c9a227] text-black px-10 py-4 uppercase tracking-[0.2em] text-sm font-bold border border-black cursor-pointer hover:bg-[#0a2a43] hover:text-white"
+            className="bg-[#1351B4] text-white px-6 py-3 tracking-normal text-sm font-semibold rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
             aria-label={`Exportar dados em formato ${t}`}
           >
-            Exportar {t}
+            Exportar {t.toUpperCase()}
           </button>
         ))}
       </div>
