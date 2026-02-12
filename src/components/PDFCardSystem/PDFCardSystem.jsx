@@ -103,28 +103,28 @@ export function PDFCardSystem({ mode = "public" }) {
       <Pesquisa onSearch={handleSearch} />
 
       {mode === "admin" && (
-        <label className="bg-[#0a2a43] text-white px-6 py-3 cursor-pointer inline-block mb-8 hover:bg-[#c9a227] hover:text-white">
+        <label className="bg-[#1351B4] text-white px-6 py-3 cursor-pointer inline-block mb-8 rounded-lg hover:bg-[#0c3c8c] transition font-semibold">
           <input
             type="file"
             multiple
             accept="application/pdf"
             onChange={handleFileUpload}
-            className="hidden cursor-pointer "
+            className="hidden cursor-pointer"
           />
           Adicionar PDF
         </label>
       )}
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPdfs.map((pdf) => (
           <article
             key={pdf.id}
-            className="bg-[#fffdfa] border-l-8 border-[#0a2a43] p-8 shadow"
+            className="bg-white border-l-4 border-[#1351B4] p-6 shadow-sm rounded-lg hover:shadow-md transition"
           >
-            <FileText size={36} className="mb-4 text-[#0a2a43]" />
+            <FileText size={32} className="mb-4 text-[#1351B4]" />
 
             {/*EDIÇÃO */}
-            <p className="font-semibold text-lg text-[#0a2a43]">
+            <p className="font-semibold text-lg text-[#1351B4]">
               Edição Nº {pdf.edicao}
             </p>
 
@@ -143,7 +143,7 @@ export function PDFCardSystem({ mode = "public" }) {
                 setSelectedPDF(pdf);
                 setCurrentPage(1);
               }}
-              className="mt-6 bg-[#0a2a43] text-white px-6 py-3 uppercase cursor-pointer hover:bg-[#c9a227] hover:text-white"
+              className="mt-6 bg-[#1351B4] text-white px-6 py-2.5 rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition font-semibold focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
             >
               Visualizar
             </button>
@@ -152,16 +152,20 @@ export function PDFCardSystem({ mode = "public" }) {
       </section>
 
       {selectedPDF && (
-        <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50">
-          <div className="bg-[#fdfcf9] w-[90vw] h-[92vh] flex flex-col border-4 border-[#0a2a43]">
-            <header className="flex justify-between px-6 py-4 border-b">
-              <h2>Leitura Oficial</h2>
-              <button onClick={() => setSelectedPDF(null)}>
-                <X />
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+          <div className="bg-white w-[90vw] h-[92vh] flex flex-col rounded-xl shadow-2xl overflow-hidden">
+            <header className="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-white">
+              <h2 className="text-lg font-semibold text-[#1351B4]">Leitura Oficial</h2>
+              <button 
+                onClick={() => setSelectedPDF(null)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+                aria-label="Fechar visualização"
+              >
+                <X size={24} />
               </button>
             </header>
 
-            <div className="flex-1 flex justify-center overflow-auto bg-[#e9e6e1] py-10">
+            <div className="flex-1 flex justify-center overflow-auto bg-gray-50 py-10">
               <Document
                 file={selectedPDF.blobUrl}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
@@ -170,21 +174,25 @@ export function PDFCardSystem({ mode = "public" }) {
               </Document>
             </div>
 
-            <nav className="flex justify-between px-6 py-4 border-t">
-              <button onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}>
-                <ChevronLeft /> Anterior
+            <nav className="flex justify-between items-center px-6 py-4 border-t border-gray-200 bg-white">
+              <button 
+                onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="flex items-center gap-2 px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+              >
+                <ChevronLeft size={20} /> Anterior
               </button>
 
-              <span>
+              <span className="text-sm font-medium text-gray-700">
                 Página {currentPage} de {numPages}
               </span>
 
               <button
-                onClick={() =>
-                  setCurrentPage(p => Math.min(p + 1, numPages))
-                }
+                onClick={() => setCurrentPage(p => Math.min(p + 1, numPages))}
+                disabled={currentPage === numPages}
+                className="flex items-center gap-2 px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
               >
-                Próxima <ChevronRight />
+                Próxima <ChevronRight size={20} />
               </button>
             </nav>
           </div>
