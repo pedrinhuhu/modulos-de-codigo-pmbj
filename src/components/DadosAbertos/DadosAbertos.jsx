@@ -28,7 +28,7 @@ function exportPDFs(type) {
     let dataStr;
     let mimeType;
     const pdfsExported = pdfs.map(({id, titulo, descricao, edicao, data, createdAt, mes, ano}) => 
-    ({id, titulo, descricao, edicao, data, createdAt, data, mes, ano}));
+    ({id, titulo, descricao, edicao, data, createdAt, mes, ano}));
     if (type === 'json') {
       dataStr = JSON.stringify(pdfsExported, null, 2);
       mimeType = 'application/json';
