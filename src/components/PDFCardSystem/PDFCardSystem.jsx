@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { FileText, X, ChevronLeft, ChevronRight, Trash } from "lucide-react";
+import { FileText, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
-import { setPdf, getPdf, removePdf } from "../../utils/storage";
+import { setPdf, getPdf } from "../../utils/storage";
 import { PDF } from "../../utils/pdf";
 import { extractTextFromPDF, enrichPdf } from "../../utils/pdfUtils";
 import { Pesquisa } from "../Pesquisa/Pesquisa";
@@ -20,21 +20,25 @@ export function PDFCardSystem({ mode = "public" }) {
   const [numPages, setNumPages] = useState(null);
   const [lastEdition, setLastEdition] = useState(0);
 
+  // 🔹 Carregamento inicial
   useEffect(() => {
     (async () => {
       const all = await getPdf();
 
-      if (all.length) setLastEdition(all[all.length - 1].edicao);
+      if (all.length) {
+        setLastEdition(Math.max(...all.map(p => p.edicao)));
+      }
 
       const enriched = all
         .map(enrichPdf)
-        .sort((a, b) => b.createdAt - a.createdAt); // 🔥 MAIS NOVO PRIMEIRO
+        .sort((a, b) => b.edicao - a.edicao); //ordem da edição mais recente primeiro
 
       setPdfs(enriched);
       setFilteredPdfs(enriched);
     })();
   }, []);
 
+  // 🔹 Upload de PDFs
   async function handleFileUpload(event) {
     const files = Array.from(event.target.files);
     let edicao = lastEdition;
@@ -43,7 +47,7 @@ export function PDFCardSystem({ mode = "public" }) {
       if (file.type !== "application/pdf") continue;
       edicao++;
 
-      const dataUrl = await new Promise(resolve => {
+      const dataUrl = await new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.readAsDataURL(file);
@@ -70,36 +74,22 @@ export function PDFCardSystem({ mode = "public" }) {
     const all = await getPdf();
     const enriched = all
       .map(enrichPdf)
-      .sort((a, b) => b.createdAt - a.createdAt); // 🔥 MAIS NOVO PRIMEIRO
+      .sort((a, b) => b.edicao - a.edicao); // ✅ MANTÉM A ORDEM
 
     setPdfs(enriched);
     setFilteredPdfs(enriched);
     setLastEdition(edicao);
 
-    // 🔴 ESSENCIAL
     event.target.value = "";
   }
 
-  async function removerPdf(id) {
-    if (!window.confirm("Deseja remover este PDF?")) return;
-
-    await removePdf(id);
-
-    const all = (await getPdf())
-      .map(enrichPdf)
-      .sort((a, b) => b.createdAt - a.createdAt); // 🔥 MANTÉM ORDEM
-
-    setPdfs(all);
-    setFilteredPdfs(all);
-    setSelectedPDF(null);
-  }
-
+  // 🔹 Pesquisa
   function handleSearch(q) {
     const query = (q || "").toLowerCase();
 
     setFilteredPdfs(
       pdfs.filter(
-        p =>
+        (p) =>
           (p.titulo || "").toLowerCase().includes(query) ||
           (p.descricao || "").toLowerCase().includes(query) ||
           (p.textoExtraido || "").toLowerCase().includes(query)
@@ -109,7 +99,6 @@ export function PDFCardSystem({ mode = "public" }) {
 
   return (
     <main className="p-8 max-w-7xl mx-auto">
-
       <Pesquisa onSearch={handleSearch} />
 
       {mode === "admin" && (
@@ -126,21 +115,25 @@ export function PDFCardSystem({ mode = "public" }) {
       )}
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {filteredPdfs.map(pdf => (
+        {filteredPdfs.map((pdf) => (
           <article
             key={pdf.id}
             className="bg-[#fffdfa] border-l-8 border-[#0a2a43] p-8 shadow"
           >
             <FileText size={36} className="mb-4 text-[#0a2a43]" />
 
-            {/* ✅ EDIÇÃO + DATA DE UPLOAD */}
-            <p className="font-medium">
-              Edição Nº {pdf.edicao} de{" "}
+            {/* ✅ EDIÇÃO */}
+            <p className="font-semibold text-lg text-[#0a2a43]">
+              Edição Nº {pdf.edicao}
+            </p>
+
+            {/* ✅ DATA */}
+            <p className="text-sm text-gray-600 mt-1 capitalize">
               {new Date(pdf.createdAt).toLocaleDateString("pt-BR", {
                 weekday: "long",
                 day: "numeric",
                 month: "long",
-                year: "numeric"
+                year: "numeric",
               })}
             </p>
 
@@ -153,15 +146,6 @@ export function PDFCardSystem({ mode = "public" }) {
             >
               Visualizar
             </button>
-
-            {mode === "admin" && (
-              <button
-                onClick={() => removerPdf(pdf.id)}
-                className="mt-3 bg-red-600 text-white px-6 py-2 flex gap-2 items-center"
-              >
-                <Trash size={16} /> Remover
-              </button>
-            )}
           </article>
         ))}
       </section>
@@ -194,19 +178,14 @@ export function PDFCardSystem({ mode = "public" }) {
                 Página {currentPage} de {numPages}
               </span>
 
-              <button onClick={() => setCurrentPage(p => Math.min(p + 1, numPages))}>
+              <button
+                onClick={() =>
+                  setCurrentPage(p => Math.min(p + 1, numPages))
+                }
+              >
                 Próxima <ChevronRight />
               </button>
             </nav>
-
-            {mode === "admin" && (
-              <button
-                onClick={() => removerPdf(selectedPDF.id)}
-                className="bg-red-700 text-white py-3"
-              >
-                Excluir PDF
-              </button>
-            )}
           </div>
         </div>
       )}

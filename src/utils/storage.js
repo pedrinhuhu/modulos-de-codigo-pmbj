@@ -9,7 +9,7 @@ export async function setPdf(pdf) {
 
   pdf.createdAt = pdf.createdAt || Date.now();
 
-  // Update or insert
+  // adicionar PDF na lista existente
   const index = existing.findIndex(p => p.id === pdf.id);
   if (index >= 0) {
     existing[index] = pdf;
@@ -24,11 +24,4 @@ export async function getPdf() {
   return JSON.parse(localStorage.getItem("pdfs") || "[]");
 }
 
-/* ===============================
-   ✅ REMOVER PDF (NOVA FUNÇÃO)
-================================ */
-export async function removePdf(id) {
-  const existing = JSON.parse(localStorage.getItem("pdfs") || "[]");
-  const updated = existing.filter(pdf => pdf.id !== id);
-  localStorage.setItem("pdfs", JSON.stringify(updated));
-}
+
