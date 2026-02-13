@@ -1,5 +1,7 @@
 export function Rodape() {
-  const ano = new Date().getFullYear();
+
+const ano = new Date().getFullYear();
+const prefeito = "Affonso Monnerat"
 
   return (
     <footer
@@ -22,7 +24,7 @@ export function Rodape() {
               Institucional
             </h3>
             <ul className="flex flex-col gap-2 text-sm">
-              <li>Prefeito Affonso Monnerat</li>
+              <li>Prefeito {prefeito} </li>
               <li>CNPJ: 28.561.041/0001-76</li>
             </ul>
           </section>
@@ -86,6 +88,12 @@ export function Rodape() {
         aria-label={`Direitos autorais do Diário Oficial, ano ${ano}`}
       >
         &copy; {ano} Diário Oficial. Todos os direitos reservados.
+      </p>
+      <p
+      className="text-sm mt-6 opacity-90"
+      aria-label={"Desenolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim RJ"}
+      >
+        Desenvolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim RJ
       </p>
     </footer>
   );
