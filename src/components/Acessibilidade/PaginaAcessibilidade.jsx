@@ -1,0 +1,135 @@
+export function PagAcess() {
+  return (
+    <main className="max-w-4xl mx-auto px-6 py-12">
+      <section 
+        className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8"
+        aria-labelledby="titulo-acessibilidade"
+      >
+        <h1 
+          id="titulo-acessibilidade"
+          className="text-3xl font-semibold text-[#1351B4] mb-4"
+        >
+          Acessibilidade
+        </h1>
+        
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Recursos de Acessibilidade Disponíveis
+        </h2>
+        
+        <p className="text-base text-gray-700 leading-relaxed mb-8">
+          Este site foi desenvolvido seguindo as diretrizes de acessibilidade
+          digital para garantir que todos os cidadãos possam acessar as
+          informações do Diário Oficial de forma autônoma e eficiente.
+        </p>
+
+        <h2 
+          className="text-xl font-semibold text-gray-800 mb-6"
+          id="funcionalidades"
+        >
+          Funcionalidades Implementadas
+        </h2>
+        
+        <ul 
+          className="space-y-6"
+          aria-labelledby="funcionalidades"
+        >
+          <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+            <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+              Ajuste de Tamanho de Fonte
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              O site oferece controle total sobre o tamanho do texto exibido. 
+              Você pode aumentar ou diminuir a fonte entre 12px e 24px, 
+              facilitando a leitura conforme sua necessidade visual. Há também 
+              a opção de redefinir para o tamanho padrão (16px) a qualquer momento.
+            </p>
+          </li>
+
+          <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+            <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+              Alto Contraste
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              Para usuários com baixa visão ou sensibilidade a cores, 
+              disponibilizamos o modo de alto contraste. Este recurso altera 
+              as cores do site para preto com texto em amarelo, proporcionando 
+              maior legibilidade e reduzindo o cansaço visual.
+            </p>
+          </li>
+
+          <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+            <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+              Leitor de Tela Integrado
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              O site conta com um leitor de tela em português brasileiro que 
+              vocaliza automaticamente os elementos da página conforme você navega. 
+              Quando ativado, o sistema lê títulos, textos, rótulos e placeholders 
+              dos campos, auxiliando pessoas com deficiência visual ou dificuldades 
+              de leitura.
+            </p>
+          </li>
+
+          <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+            <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+              Como Acessar
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              Todas as funcionalidades estão disponíveis através do botão 
+              flutuante de acessibilidade (ícone de pessoa) localizado no canto 
+              inferior direito de todas as páginas. Ao clicar, um menu será 
+              aberto com todas as opções de personalização.
+            </p>
+          </li>
+
+          <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+            <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+              Navegação por Teclado
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              O site é totalmente navegável por teclado, permitindo que usuários 
+              que não utilizam mouse possam acessar todos os recursos através da 
+              tecla Tab e outras teclas de atalho padrão do navegador.
+            </p>
+          </li>
+
+          <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+            <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+              Persistência de Configurações
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              Todas as suas preferências de acessibilidade são salvas 
+              automaticamente e permanecerão ativas em suas próximas visitas 
+              ao site, garantindo uma experiência personalizada e contínua.
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section 
+        className="bg-blue-50 rounded-lg border border-blue-200 p-6"
+        aria-labelledby="contato-acessibilidade"
+      >
+        <h2 
+          id="contato-acessibilidade"
+          className="text-lg font-semibold text-[#1351B4] mb-3"
+        >
+          Precisa de ajuda?
+        </h2>
+        <p className="text-gray-700 leading-relaxed">
+          Se você encontrar qualquer barreira de acessibilidade ou tiver 
+          sugestões de melhoria, entre em contato através da nossa{' '}
+          <a 
+            href="https://bomjardim1.websiteseguro.com/ouvidoria/?pagina=fale_conosco_ouvidoria.php"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#1351B4] font-semibold underline hover:text-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4] rounded"
+            aria-label="Acessar página da Ouvidoria (abre em nova aba)"
+          >
+            Ouvidoria
+          </a>.
+        </p>
+      </section>
+    </main>
+  );
+}

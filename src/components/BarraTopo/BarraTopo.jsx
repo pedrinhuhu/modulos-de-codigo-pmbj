@@ -4,7 +4,7 @@ import { Search, Headset, Info, HeartHandshake } from 'lucide-react';
 
 const linkOuvidoria = 'https://bomjardim1.websiteseguro.com/ouvidoria/?pagina=fale_conosco_ouvidoria.php';
 const linkTransparencia = 'https://bomjardim1.websiteseguro.com/e-sic/';
-const linkAcessibilidade = 'https://www.bomjardim.rj.gov.br/e-sic/?pagina=../acessibilidade.php';
+const linkAcessibilidade = "/acessibilidade";
 const linkPesquisa = '#pesquisa';
 
 export function BarraTopo() {
