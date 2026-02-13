@@ -5,21 +5,29 @@ export function Pesquisa({ onSearch }) {
   const [mes, setMes] = useState('');
   const [ano, setAno] = useState('');
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSearch(query, mes, ano);
+  }
+
   return (
-    <section
+    <section 
       className="mb-16 bg-white border border-gray-200 p-10 shadow-sm rounded-lg"
       aria-label="Formulário de pesquisa oficial"
     >
-      <h2
+      <h2 
         className="text-2xl font-sans font-semibold tracking-normal mb-8 text-[#1351B4] border-b border-gray-200 pb-4"
         id="titulo-pesquisa"
       >
-        Pesquisa
+        Pesquisa Oficial
       </h2>
-
-      <div className="flex gap-4" role="search" aria-labelledby="titulo-pesquisa">
-        
-        {/* Ano */}
+      
+      <form
+        className="flex gap-4"
+        role="search"
+        aria-labelledby="titulo-pesquisa"
+        onSubmit={handleSubmit}
+      >
         <label htmlFor="pesquisa-ano" className="sr-only">
           Filtrar por ano
         </label>
@@ -35,7 +43,6 @@ export function Pesquisa({ onSearch }) {
           max="2100"
         />
 
-        {/* Mês */}
         <label htmlFor="pesquisa-mes" className="sr-only">
           Filtrar por mês
         </label>
@@ -55,7 +62,6 @@ export function Pesquisa({ onSearch }) {
           ))}
         </select>
 
-        {/* Texto */}
         <label htmlFor="pesquisa-texto" className="sr-only">
           Pesquisar no conteúdo dos atos
         </label>
@@ -69,16 +75,14 @@ export function Pesquisa({ onSearch }) {
           aria-label="Campo de pesquisa por texto"
         />
 
-        {/* Botão */}
         <button
-          type="button"
-          onClick={() => onSearch(query, mes, ano)}
+          type="submit"
           className="bg-[#1351B4] text-white px-8 py-3 tracking-normal text-sm font-semibold rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
           aria-label="Executar pesquisa"
         >
           Pesquisar
         </button>
-      </div>
+      </form>
     </section>
   );
 }
