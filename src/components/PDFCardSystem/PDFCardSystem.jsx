@@ -115,7 +115,7 @@ export function PDFCardSystem({ mode = "public" }) {
         </label>
       )}
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section id="section__pdf" className="border:none grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPdfs.map((pdf) => (
           <article
             key={pdf.id}
