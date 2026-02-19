@@ -1,3 +1,5 @@
+import brasao from '../../assets/brasao.png';
+
 /**
  * @component Cabecalho
  * @description Cabeçalho principal do site. Exibe o brasão da prefeitura
@@ -17,8 +19,7 @@ export function Cabecalho() {
           aria-label="Ir para o site oficial da Prefeitura Municipal de Bom Jardim"
         >
           <img
-            src="src/assets/brasao.png"
-            alt="Brasão da Prefeitura Municipal de Bom Jardim"
+            src={brasao} alt="Brasão da Prefeitura Municipal de Bom Jardim"
             className="w-14 md:w-24"
           />
         </a>
