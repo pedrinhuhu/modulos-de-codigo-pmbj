@@ -8,16 +8,16 @@ import { getPdf } from '../../utils/storage';
  */
 export function DadosAbertos() {
   return (
-    <section className="mb-3 bg-white border border-gray-200 p-10 shadow-sm rounded-lg justify-center items-center" aria-label="Seção de Dados Abertos">
-      <h2 className="text-2xl font-sans font-semibold tracking-normal mb-8 text-[#1351B4] border-b border-gray-200 pb-4" aria-label="Seção de Dados Abertos">
+    <section className="mb-3 bg-white border border-gray-200 p-6 md:p-10 shadow-sm rounded-lg" aria-label="Seção de Dados Abertos">
+      <h2 className="text-xl md:text-2xl font-sans font-semibold tracking-normal mb-6 md:mb-8 text-[#1351B4] border-b border-gray-200 pb-4" aria-label="Seção de Dados Abertos">
         Dados Abertos
       </h2>
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
         {['json', 'csv', 'txt'].map(t => (
           <button
             key={t}
             onClick={() => exportPDFs(t)}
-            className="bg-[#1351B4] text-white px-6 py-3 tracking-normal text-sm font-semibold rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+            className="w-full sm:w-auto bg-[#1351B4] text-white px-6 py-3 tracking-normal text-sm font-semibold rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
             aria-label={`Exportar dados em formato ${t}`}
           >
             Exportar {t.toUpperCase()}
