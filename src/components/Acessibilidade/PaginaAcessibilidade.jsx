@@ -1,3 +1,10 @@
+/**
+ * @component PagAcess
+ * @description Página estática que documenta os recursos de acessibilidade do site:
+ * ajuste de fonte, alto contraste, leitor de tela, navegação por teclado e persistência
+ * de configurações. Inclui link para a Ouvidoria ao final.
+ * @returns {JSX.Element}
+ */
 export function PagAcess() {
   return (
     <main className="max-w-4xl mx-auto px-6 py-12">
@@ -86,11 +93,39 @@ export function PagAcess() {
             <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
               Navegação por Teclado
             </h3>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed mb-3">
               O site é totalmente navegável por teclado, permitindo que usuários 
-              que não utilizam mouse possam acessar todos os recursos através da 
-              tecla Tab e outras teclas de atalho padrão do navegador.
+              que não utilizam mouse possam acessar todos os recursos. Utilize 
+              as seguintes teclas de atalho:
             </p>
+            <ul className="space-y-2 ml-4">
+              <li className="text-gray-700">
+                <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">Tab</kbd>
+                {' '}- Navegar para o próximo elemento interativo
+              </li>
+              <li className="text-gray-700">
+                <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">Shift</kbd>
+                {' '}+{' '}
+                <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">Tab</kbd>
+                {' '}- Navegar para o elemento anterior
+              </li>
+              <li className="text-gray-700">
+                <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">Enter</kbd>
+                {' '}- Ativar botões e links
+              </li>
+              <li className="text-gray-700">
+                <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">Espaço</kbd>
+                {' '}- Ativar botões e caixas de seleção
+              </li>
+              <li className="text-gray-700">
+                <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">Esc</kbd>
+                {' '}- Fechar menus e diálogos
+              </li>
+              <li className="text-gray-700">
+                <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">Setas</kbd>
+                {' '}- Navegar em menus, listas e controles deslizantes
+              </li>
+            </ul>
           </li>
 
           <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">

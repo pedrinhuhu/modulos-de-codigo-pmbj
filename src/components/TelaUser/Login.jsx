@@ -1,8 +1,24 @@
 import { useNavigate } from "react-router-dom";
 
+/**
+ * @component Login
+ * @description Página de autenticação do painel administrativo.
+ * Valida usuário e senha; em caso de sucesso, salva `"logado"` no
+ * `localStorage` e redireciona para `/pdfs`.
+ *
+ * @remarks Credenciais hardcoded — substituir por autenticação real antes de ir para produção.
+ * @returns {JSX.Element}
+ */
 export function Login() {
   const navigate = useNavigate();
 
+  /**
+   * @function handleLogin
+   * @description Lê `user` e `password` do formulário e valida contra
+   * credenciais fixas. Redireciona em caso de sucesso ou exibe alerta em falha.
+   * @param {React.FormEvent<HTMLFormElement>} e
+   * @returns {void}
+   */
   function handleLogin(e) {
     e.preventDefault();
 

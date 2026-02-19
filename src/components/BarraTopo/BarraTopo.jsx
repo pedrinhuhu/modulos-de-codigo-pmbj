@@ -1,12 +1,23 @@
 import { Search, Headset, Info, HeartHandshake } from 'lucide-react';
 
-// Links externos usados na barra de topo
-
+/** @type {string} URL externa da Ouvidoria */
 const linkOuvidoria = 'https://bomjardim1.websiteseguro.com/ouvidoria/?pagina=fale_conosco_ouvidoria.php';
+
+/** @type {string} URL externa do portal de Transparência (e-SIC) */
 const linkTransparencia = 'https://bomjardim1.websiteseguro.com/e-sic/';
+
+/** @type {string} Rota interna da página de Acessibilidade */
 const linkAcessibilidade = "/acessibilidade";
+
+/** @type {string} Âncora para o campo de pesquisa na página */
 const linkPesquisa = '#pesquisa';
 
+/**
+ * @component BarraTopo
+ * @description Barra de navegação principal do site. Exibe o nome da prefeitura
+ * (link para home) e atalhos para Ouvidoria, Transparência, Acessibilidade e Pesquisa.
+ * @returns {JSX.Element}
+ */
 export function BarraTopo() {
   return (
     <nav 

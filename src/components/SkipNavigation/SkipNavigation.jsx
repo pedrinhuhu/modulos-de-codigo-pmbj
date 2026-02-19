@@ -1,3 +1,10 @@
+/**
+ * @component SkipNavigation
+ * @description Link de acessibilidade invisível que aparece ao receber foco (via Tab).
+ * Permite que usuários de teclado pulem direto para o conteúdo principal,
+ * ignorando a navegação repetitiva. O destino deve ter `id="conteudo-principal"`.
+ * @returns {JSX.Element}
+ */
 export function SkipNavigation() {
   return (
     <a 

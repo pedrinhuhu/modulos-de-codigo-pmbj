@@ -12,15 +12,35 @@ import { Pesquisa } from "../Pesquisa/Pesquisa";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
+/**
+ * @component PDFCardSystem
+ * @description Lista, pesquisa e visualiza edições do Diário Oficial em PDF.
+ * No modo `admin`, também permite o upload de novos arquivos.
+ *
+ * @param {Object} props
+ * @param {"public" | "admin"} [props.mode="public"] - Define se o botão de upload é exibido
+ * @returns {JSX.Element}
+ */
 export function PDFCardSystem({ mode = "public" }) {
+  /** @type {[PDF[], Function]} Lista completa de PDFs carregados do storage */
   const [pdfs, setPdfs] = useState([]);
+
+  /** @type {[PDF[], Function]} Subconjunto de `pdfs` filtrado pela pesquisa */
   const [filteredPdfs, setFilteredPdfs] = useState([]);
+
+  /** @type {[PDF|null, Function]} PDF atualmente aberto no modal de visualização */
   const [selectedPDF, setSelectedPDF] = useState(null);
+
+  /** @type {[number, Function]} Página atual exibida no visualizador */
   const [currentPage, setCurrentPage] = useState(1);
+
+  /** @type {[number|null, Function]} Total de páginas do PDF aberto */
   const [numPages, setNumPages] = useState(null);
+
+  /** @type {[number, Function]} Número da última edição cadastrada, usado para incremento no upload */
   const [lastEdition, setLastEdition] = useState(0);
 
-  //Carregamento inicial
+  // Carrega e ordena todos os PDFs do storage ao montar o componente
   useEffect(() => {
     (async () => {
       const all = await getPdf();
@@ -31,14 +51,21 @@ export function PDFCardSystem({ mode = "public" }) {
 
       const enriched = all
         .map(enrichPdf)
-        .sort((a, b) => b.edicao - a.edicao); //ordem da edição mais recente primeiro
+        .sort((a, b) => b.edicao - a.edicao); // edição mais recente primeiro
 
       setPdfs(enriched);
       setFilteredPdfs(enriched);
     })();
   }, []);
 
-  //Upload de PDFs
+  /**
+   * @function handleFileUpload
+   * @description Processa o upload de um ou mais arquivos PDF. Para cada arquivo:
+   * incrementa o número de edição, converte para base64, extrai o texto e persiste
+   * no storage via `setPdf`.
+   * @param {React.ChangeEvent<HTMLInputElement>} event
+   * @returns {Promise<void>}
+   */
   async function handleFileUpload(event) {
     const files = Array.from(event.target.files);
     let edicao = lastEdition;
@@ -74,7 +101,7 @@ export function PDFCardSystem({ mode = "public" }) {
     const all = await getPdf();
     const enriched = all
       .map(enrichPdf)
-      .sort((a, b) => b.edicao - a.edicao); //MANTÉM A ORDEM
+      .sort((a, b) => b.edicao - a.edicao);
 
     setPdfs(enriched);
     setFilteredPdfs(enriched);
@@ -83,7 +110,13 @@ export function PDFCardSystem({ mode = "public" }) {
     event.target.value = "";
   }
 
-  //Pesquisa
+  /**
+   * @function handleSearch
+   * @description Filtra `pdfs` pelo termo buscado, comparando contra
+   * `titulo`, `descricao` e `textoExtraido` (case-insensitive).
+   * @param {string} q - Termo de busca
+   * @returns {void}
+   */
   function handleSearch(q) {
     const query = (q || "").toLowerCase();
 

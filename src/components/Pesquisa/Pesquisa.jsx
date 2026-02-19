@@ -1,10 +1,31 @@
 import { useState } from 'react';
 
+/**
+ * @component Pesquisa
+ * @description Formulário de pesquisa com filtros por ano, mês e texto livre.
+ * Ao submeter, chama `onSearch` com os três valores.
+ *
+ * @param {Object} props
+ * @param {(query: string, mes: string, ano: string) => void} props.onSearch - Callback disparado ao submeter o formulário
+ * @returns {JSX.Element}
+ */
 export function Pesquisa({ onSearch }) {
+  /** @type {[string, Function]} Texto livre para busca no conteúdo dos atos */
   const [query, setQuery] = useState('');
+
+  /** @type {[string, Function]} Mês selecionado (1–12) ou vazio para todos */
   const [mes, setMes] = useState('');
+
+  /** @type {[string, Function]} Ano digitado ou vazio para todos */
   const [ano, setAno] = useState('');
 
+  /**
+   * @function handleSubmit
+   * @description Previne o comportamento padrão do form e dispara `onSearch`
+   * com os filtros atuais.
+   * @param {React.FormEvent<HTMLFormElement>} e
+   * @returns {void}
+   */
   function handleSubmit(e) {
     e.preventDefault();
     onSearch(query, mes, ano);

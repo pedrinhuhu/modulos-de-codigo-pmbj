@@ -1,3 +1,9 @@
+/**
+ * @component Cabecalho
+ * @description Cabeçalho principal do site. Exibe o brasão da prefeitura
+ * (link para home) e o título "Diário Oficial".
+ * @returns {JSX.Element}
+ */
 export function Cabecalho() {
   return (
     <header

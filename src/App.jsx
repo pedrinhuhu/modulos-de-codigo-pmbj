@@ -12,6 +12,19 @@ import { RotaPrivada } from './routes/RotaPrivada';
 import { PagAcess } from './components/Acessibilidade/paginaAcessibilidade';
 import './App.css';
 
+/**
+ * @component App
+ * @description Componente raiz da aplicação. Define o layout global e as rotas:
+ *
+ * | Rota            | Componente   | Acesso     |
+ * |-----------------|--------------|------------|
+ * | `/`             | PDFCardSystem | Público   |
+ * | `/login`        | Login         | Público   |
+ * | `/pdfs`         | TelaPDFs      | Privado   |
+ * | `/acessibilidade` | PagAcess    | Público   |
+ *
+ * @returns {JSX.Element}
+ */
 export function App() {
   return (
     <AccessibilityProvider>
@@ -22,8 +35,7 @@ export function App() {
         <Route path="/" element={<PDFCardSystem />} />
         <Route path="/login" element={<Login />} />
         <Route path="/pdfs" element={<RotaPrivada><TelaPDFs /></RotaPrivada>}/>
-        <Route path="/acessibilidade" element={<PagAcess />}>
-        </Route>
+        <Route path="/acessibilidade" element={<PagAcess />} />
       </Routes>
       <Acessibilidade />
       <Rodape />

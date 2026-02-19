@@ -1,6 +1,11 @@
-import {getPdf} from '../../utils/storage';
+import { getPdf } from '../../utils/storage';
 
-
+/**
+ * @component DadosAbertos
+ * @description Seção que exibe botões para exportar os dados dos PDFs cadastrados
+ * nos formatos JSON, CSV e TXT.
+ * @returns {JSX.Element}
+ */
 export function DadosAbertos() {
   return (
     <section className="mb-3 bg-white border border-gray-200 p-10 shadow-sm rounded-lg justify-center items-center" aria-label="Seção de Dados Abertos">
@@ -8,7 +13,7 @@ export function DadosAbertos() {
         Dados Abertos
       </h2>
       <div className="flex gap-4">
-        {['json','csv','txt'].map(t => (
+        {['json', 'csv', 'txt'].map(t => (
           <button
             key={t}
             onClick={() => exportPDFs(t)}
@@ -23,12 +28,22 @@ export function DadosAbertos() {
   );
 }
 
+/**
+ * @function exportPDFs
+ * @description Busca todos os PDFs via `getPdf()`, filtra apenas os campos públicos
+ * e dispara o download do arquivo no formato solicitado.
+ * Campos exportados: `id`, `titulo`, `descricao`, `edicao`, `data`, `createdAt`, `mes`, `ano`.
+ * @param {"json" | "csv" | "txt"} type - Formato do arquivo de exportação
+ * @returns {void}
+ */
 function exportPDFs(type) {
   getPdf().then(pdfs => {
     let dataStr;
     let mimeType;
-    const pdfsExported = pdfs.map(({id, titulo, descricao, edicao, data, createdAt, mes, ano}) => 
-    ({id, titulo, descricao, edicao, data, createdAt, mes, ano}));
+
+    const pdfsExported = pdfs.map(({ id, titulo, descricao, edicao, data, createdAt, mes, ano }) =>
+      ({ id, titulo, descricao, edicao, data, createdAt, mes, ano }));
+
     if (type === 'json') {
       dataStr = JSON.stringify(pdfsExported, null, 2);
       mimeType = 'application/json';
@@ -46,6 +61,7 @@ function exportPDFs(type) {
       return;
     }
 
+    // Cria um link temporário no DOM para acionar o download e o remove em seguida
     const blob = new Blob([dataStr], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -55,7 +71,5 @@ function exportPDFs(type) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
-  
   });
 }

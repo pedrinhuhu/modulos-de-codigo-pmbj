@@ -3,53 +3,96 @@ import { Accessibility, Plus, Minus } from 'lucide-react';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
 import './Acessibilidade.css';
 
+/**
+ * @component Acessibilidade
+ * @description Botão flutuante que abre um menu com controles de acessibilidade:
+ * tamanho de fonte, contraste e leitor de tela.
+ * @requires AccessibilityProvider
+ */
 export function Acessibilidade() {
+  /** @type {boolean} Controla a visibilidade do menu */
   const [showMenu, setShowMenu] = useState(false);
-  const { highContrast, setHighContrast, fontSize, 
+
+  const { highContrast, setHighContrast, fontSize,
     setFontSize, screenReader, setScreenReader } = useAccessibility();
+
+  /** @type {React.MutableRefObject<Function|null>} Referência ao listener de `focusin` do leitor de tela */
   const focusHandler = useRef(null);
 
+  /**
+   * @description Aumenta a fonte em 2px. Máximo: 24px.
+   * @returns {void}
+   */
   const increaseFontSize = () => {
     setFontSize(prev => Math.min(prev + 2, 24));
   };
 
+  /**
+   * @description Diminui a fonte em 2px. Mínimo: 12px.
+   * @returns {void}
+   */
   const decreaseFontSize = () => {
     setFontSize(prev => Math.max(prev - 2, 12));
   };
 
+  /**
+   * @description Alterna entre tema padrão e alto contraste.
+   * @param {"default" | "high-contrast"} theme
+   * @returns {void}
+   */
   const handleTheme = (theme) => {
     setHighContrast(theme === "high-contrast");
   };
 
+  /**
+   * @description Ativa ou desativa o leitor de tela.
+   * @param {"screen-reader" | "off"} reader
+   * @returns {void}
+   */
   const handleScreenReader = (reader) => {
     const isOn = reader === "screen-reader";
-    if(isOn) loadReader()
+    if (isOn) loadReader();
     else unLoadReader();
     setScreenReader(isOn);
   };
 
+  /**
+   * @description Registra listener global de `focusin` para narrar o elemento focado.
+   * Prioridade de leitura: `aria-label` → `innerText` → `placeholder`.
+   * Evita registro duplicado via `focusHandler.current`.
+   * @returns {void}
+   */
   function loadReader() {
-    if(focusHandler.current) return;
+    if (focusHandler.current) return;
 
     const handler = (e) => {
-      if(!e || !e.target) return;
+      if (!e || !e.target) return;
       const target = e.target;
       const texto = target.getAttribute('aria-label') ||
-      target.innerText ||
-      target.placeholder;
-      if(texto && texto.trim()) falar(texto.trim());
-    }
+        target.innerText ||
+        target.placeholder;
+      if (texto && texto.trim()) falar(texto.trim());
+    };
 
-    document.addEventListener('focusin', (handler));
+    document.addEventListener('focusin', handler);
     focusHandler.current = handler;
   }
 
+  /**
+   * @description Remove o listener de `focusin` e limpa a referência.
+   * @returns {void}
+   */
   function unLoadReader() {
-    if(!focusHandler.current) return;
+    if (!focusHandler.current) return;
     document.removeEventListener('focusin', focusHandler.current);
     focusHandler.current = null;
   }
-      
+
+  /**
+   * @description Narra um texto via Web Speech API em pt-BR.
+   * @param {string} texto
+   * @returns {void}
+   */
   function falar(texto) {
     const fala = new SpeechSynthesisUtterance(texto);
     fala.lang = 'pt-BR';

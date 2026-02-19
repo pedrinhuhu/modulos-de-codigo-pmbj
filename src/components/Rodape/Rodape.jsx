@@ -1,7 +1,16 @@
+/**
+ * @component Rodape
+ * @description Rodapé institucional com informações da prefeitura:
+ * nome do prefeito, CNPJ, contatos, endereço, horário e copyright dinâmico.
+ * @returns {JSX.Element}
+ */
 export function Rodape() {
 
-const ano = new Date().getFullYear();
-const prefeito = "Affonso Monnerat"
+  /** @type {number} Ano atual, usado no copyright */
+  const ano = new Date().getFullYear();
+
+  /** @type {string} Nome do prefeito exibido na seção institucional */
+  const prefeito = "Affonso Monnerat";
 
   return (
     <footer
@@ -90,8 +99,8 @@ const prefeito = "Affonso Monnerat"
         &copy; {ano} Diário Oficial. Todos os direitos reservados.
       </p>
       <p
-      className="text-sm mt-6 opacity-90"
-      aria-label={"Desenolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim RJ"}
+        className="text-sm mt-6 opacity-90"
+        aria-label={"Desenvolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim RJ"}
       >
         Desenvolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim RJ
       </p>
