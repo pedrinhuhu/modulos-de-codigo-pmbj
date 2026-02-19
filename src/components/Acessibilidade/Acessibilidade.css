@@ -129,11 +129,16 @@
 }
 
 [data-theme="high-contrast"] svg.lucide-minus,
- svg.lucide-plus{
+svg.lucide-plus{
   color: #000000 !important;
   fill: currentColor !important;
   stroke: currentColor !important;
 }
+
+[data-theme="high-contrast"] svg.lucide-menu {
+  color: #000 !important;
+}
+
 
 /* Ícone de acessibilidade invertido */
 [data-theme="high-contrast"] svg.lucide-accessibility {
