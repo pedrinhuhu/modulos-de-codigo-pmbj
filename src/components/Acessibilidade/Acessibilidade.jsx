@@ -7,6 +7,7 @@ import './Acessibilidade.css';
  * @component Acessibilidade
  * @description Botão flutuante que abre um menu com controles de acessibilidade:
  * tamanho de fonte, contraste e leitor de tela.
+ * Em mobile, o tamanho máximo da fonte é limitado a 18px para evitar quebra de layout.
  * @requires AccessibilityProvider
  */
 export function Acessibilidade() {
@@ -19,12 +20,15 @@ export function Acessibilidade() {
   /** @type {React.MutableRefObject<Function|null>} Referência ao listener de `focusin` do leitor de tela */
   const focusHandler = useRef(null);
 
+  /** @type {number} Limite máximo de fonte: 18px em mobile, 24px em desktop */
+  const maxFontSize = window.innerWidth < 768 ? 18 : 24;
+
   /**
-   * @description Aumenta a fonte em 2px. Máximo: 24px.
+   * @description Aumenta a fonte em 2px respeitando o limite do dispositivo.
    * @returns {void}
    */
   const increaseFontSize = () => {
-    setFontSize(prev => Math.min(prev + 2, 24));
+    setFontSize(prev => Math.min(prev + 2, maxFontSize));
   };
 
   /**
@@ -101,7 +105,6 @@ export function Acessibilidade() {
 
   return (
     <>
-      {/* Botão flutuante */}
       <button
         className="fixed bottom-6 right-6 flex flex-col items-center justify-center border-4 rounded-full bg-[#1351B4] border-white text-white w-16 h-16 z-50 hover:bg-[#0c3c8c] focus:outline-none focus:ring-4 focus:ring-[#1351B4] shadow-lg cursor-pointer transition"
         onClick={() => setShowMenu(v => !v)}
@@ -115,7 +118,7 @@ export function Acessibilidade() {
       {showMenu && (
         <aside
           id="accessibility-menu"
-          className="fixed bottom-24 right-6 z-50 bg-white border border-gray-200 rounded-xl shadow-lg p-6 w-80 animate-fade-in"
+          className="fixed bottom-24 right-4 md:right-6 z-50 bg-white border border-gray-200 rounded-xl shadow-lg p-6 w-[calc(100vw-2rem)] md:w-80 animate-fade-in"
           role="dialog"
           aria-modal="true"
           aria-labelledby="titulo-acessibilidade"
@@ -128,15 +131,15 @@ export function Acessibilidade() {
           </h2>
 
           {/* Tamanho da fonte */}
-          <section
-            className="mb-5"
-            aria-labelledby="font-size-label"
-          >
+          <section className="mb-5" aria-labelledby="font-size-label">
             <h3
               id="font-size-label"
               className="block text-sm font-medium mb-2 text-gray-700"
             >
               Tamanho da fonte
+              {window.innerWidth < 768 && (
+                <span className="ml-2 text-xs text-gray-400">(máx. {maxFontSize}px no mobile)</span>
+              )}
             </h3>
 
             <div className="flex gap-2 items-center">
@@ -159,7 +162,8 @@ export function Acessibilidade() {
 
               <button
                 onClick={increaseFontSize}
-                className="cursor-pointer px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#1351B4] flex items-center gap-1 transition"
+                disabled={fontSize >= maxFontSize}
+                className="cursor-pointer px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#1351B4] flex items-center gap-1 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 aria-label="Aumentar tamanho da fonte"
               >
                 <Plus size={14} aria-hidden="true" /> A
@@ -181,10 +185,7 @@ export function Acessibilidade() {
           </section>
 
           {/* Contraste */}
-          <section
-            className="mb-5"
-            aria-labelledby="theme-label"
-          >
+          <section className="mb-5" aria-labelledby="theme-label">
             <h3
               id="theme-label"
               className="block text-sm font-medium mb-2 text-gray-700"
@@ -222,10 +223,7 @@ export function Acessibilidade() {
           </section>
 
           {/* Leitor de Tela */}
-          <section
-            className="mb-5"
-            aria-labelledby="screen-reader-label"
-          >
+          <section className="mb-5" aria-labelledby="screen-reader-label">
             <h3
               id="screen-reader-label"
               className="block text-sm font-medium mb-2 text-gray-700"
@@ -263,10 +261,7 @@ export function Acessibilidade() {
           </section>
 
           <div className="pt-4 border-t border-gray-200">
-            <p
-              className="text-xs text-gray-500"
-              aria-live="polite"
-            >
+            <p className="text-xs text-gray-500" aria-live="polite">
               As configurações são salvas automaticamente
             </p>
           </div>
