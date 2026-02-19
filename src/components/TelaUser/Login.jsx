@@ -35,17 +35,17 @@ export function Login() {
 
   return (
     <main
-      className="min-h-screen flex items-center justify-center bg-[#0a2a43]"
+      className="min-h-screen flex items-center justify-center bg-[#0a2a43] px-4"
       role="main"
     >
       <form
         onSubmit={handleLogin}
         aria-labelledby="login-title"
-        className="bg-white border border-gray-300 rounded-xl shadow-xl p-10 w-full max-w-md flex flex-col gap-5"
+        className="bg-white border border-gray-300 rounded-xl shadow-xl p-8 md:p-10 w-full max-w-md flex flex-col gap-5"
       >
         <h1
           id="login-title"
-          className="text-3xl font-bold text-center text-[#0a2a43]"
+          className="text-2xl md:text-3xl font-bold text-center text-[#0a2a43]"
         >
           Acesso ao Sistema
         </h1>

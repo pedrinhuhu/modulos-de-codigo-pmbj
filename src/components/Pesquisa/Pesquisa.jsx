@@ -32,46 +32,42 @@ export function Pesquisa({ onSearch }) {
   }
 
   return (
-    <section 
-      className="mb-16 bg-white border border-gray-200 p-10 shadow-sm rounded-lg"
+    <section
+      className="mb-16 bg-white border border-gray-200 p-6 md:p-10 shadow-sm rounded-lg"
       aria-label="Formulário de pesquisa oficial"
     >
-      <h2 
-        className="text-2xl font-sans font-semibold tracking-normal mb-8 text-[#1351B4] border-b border-gray-200 pb-4"
+      <h2
+        className="text-xl md:text-2xl font-sans font-semibold tracking-normal mb-6 md:mb-8 text-[#1351B4] border-b border-gray-200 pb-4"
         id="titulo-pesquisa"
       >
         Pesquisa Oficial
       </h2>
-      
+
       <form
-        className="flex gap-4"
+        className="flex flex-col md:flex-row gap-3 md:gap-4"
         role="search"
         aria-labelledby="titulo-pesquisa"
         onSubmit={handleSubmit}
       >
-        <label htmlFor="pesquisa-ano" className="sr-only">
-          Filtrar por ano
-        </label>
+        <label htmlFor="pesquisa-ano" className="sr-only">Filtrar por ano</label>
         <input
           id="pesquisa-ano"
           type="number"
           placeholder="Ano"
           value={ano}
           onChange={(e) => setAno(e.target.value)}
-          className="flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
+          className="w-full md:flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
           aria-label="Filtrar por ano"
           min="1900"
           max="2100"
         />
 
-        <label htmlFor="pesquisa-mes" className="sr-only">
-          Filtrar por mês
-        </label>
+        <label htmlFor="pesquisa-mes" className="sr-only">Filtrar por mês</label>
         <select
           id="pesquisa-mes"
           value={mes}
           onChange={(e) => setMes(e.target.value)}
-          className="flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
+          className="w-full md:flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
           aria-label="Filtrar por mês"
         >
           <option value="">Todos</option>
@@ -83,22 +79,20 @@ export function Pesquisa({ onSearch }) {
           ))}
         </select>
 
-        <label htmlFor="pesquisa-texto" className="sr-only">
-          Pesquisar no conteúdo dos atos
-        </label>
+        <label htmlFor="pesquisa-texto" className="sr-only">Pesquisar no conteúdo dos atos</label>
         <input
           id="pesquisa-texto"
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Pesquisar no conteúdo dos atos"
-          className="flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
+          className="w-full md:flex-1 px-4 py-3 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1351B4] focus:border-[#1351B4] transition"
           aria-label="Campo de pesquisa por texto"
         />
 
         <button
           type="submit"
-          className="bg-[#1351B4] text-white px-8 py-3 tracking-normal text-sm font-semibold rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+          className="w-full md:w-auto bg-[#1351B4] text-white px-8 py-3 tracking-normal text-sm font-semibold rounded-lg cursor-pointer hover:bg-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
           aria-label="Executar pesquisa"
         >
           Pesquisar

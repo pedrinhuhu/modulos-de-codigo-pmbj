@@ -46,10 +46,12 @@ export function PDFCardSystem({ mode = "public" }) {
       const all = await getPdf();
 
       if (all.length) {
-        setLastEdition(Math.max(...all.map((p) => p.edicao)));
+        setLastEdition(Math.max(...all.map(p => p.edicao)));
       }
 
-      const enriched = all.map(enrichPdf).sort((a, b) => b.edicao - a.edicao); // edição mais recente primeiro
+      const enriched = all
+        .map(enrichPdf)
+        .sort((a, b) => b.edicao - a.edicao);
 
       setPdfs(enriched);
       setFilteredPdfs(enriched);
@@ -89,7 +91,7 @@ export function PDFCardSystem({ mode = "public" }) {
         edicao,
         data,
         data.getMonth() + 1,
-        data.getFullYear(),
+        data.getFullYear()
       );
 
       pdf.url = dataUrl;
@@ -97,7 +99,9 @@ export function PDFCardSystem({ mode = "public" }) {
     }
 
     const all = await getPdf();
-    const enriched = all.map(enrichPdf).sort((a, b) => b.edicao - a.edicao);
+    const enriched = all
+      .map(enrichPdf)
+      .sort((a, b) => b.edicao - a.edicao);
 
     setPdfs(enriched);
     setFilteredPdfs(enriched);
@@ -121,13 +125,13 @@ export function PDFCardSystem({ mode = "public" }) {
         (p) =>
           (p.titulo || "").toLowerCase().includes(query) ||
           (p.descricao || "").toLowerCase().includes(query) ||
-          (p.textoExtraido || "").toLowerCase().includes(query),
-      ),
+          (p.textoExtraido || "").toLowerCase().includes(query)
+      )
     );
   }
 
   return (
-    <main className="p-8 max-w-7xl mx-auto">
+    <main className="p-4 md:p-8 max-w-7xl mx-auto">
       <DadosAbertos />
       <Pesquisa onSearch={handleSearch} />
 
@@ -144,10 +148,7 @@ export function PDFCardSystem({ mode = "public" }) {
         </label>
       )}
 
-      <section
-        id="section__pdf"
-        className="border:none grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
+      <section id="section__pdf" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPdfs.map((pdf) => (
           <article
             key={pdf.id}
@@ -155,12 +156,10 @@ export function PDFCardSystem({ mode = "public" }) {
           >
             <FileText size={32} className="mb-4 text-[#1351B4]" />
 
-            {/*EDIÇÃO */}
             <p className="font-semibold text-lg text-[#1351B4]">
               Edição Nº {pdf.edicao}
             </p>
 
-            {/*DATA */}
             <p className="text-sm text-gray-600 mt-1 capitalize">
               {new Date(pdf.createdAt).toLocaleDateString("pt-BR", {
                 weekday: "long",
@@ -184,12 +183,10 @@ export function PDFCardSystem({ mode = "public" }) {
       </section>
 
       {selectedPDF && (
-        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
-          <div className="bg-white w-[90vw] h-[92vh] flex flex-col rounded-xl shadow-2xl overflow-hidden">
-            <header className="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-white">
-              <h2 className="text-lg font-semibold text-[#1351B4]">
-                Leitura Oficial
-              </h2>
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-2 md:p-0">
+          <div className="bg-white w-full md:w-[90vw] h-[95vh] md:h-[92vh] flex flex-col rounded-xl shadow-2xl overflow-hidden">
+            <header className="flex justify-between items-center px-4 md:px-6 py-4 border-b border-gray-200 bg-white">
+              <h2 className="text-base md:text-lg font-semibold text-[#1351B4]">Leitura Oficial</h2>
               <button
                 onClick={() => setSelectedPDF(null)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
@@ -199,41 +196,32 @@ export function PDFCardSystem({ mode = "public" }) {
               </button>
             </header>
 
-            <div className="flex-1 flex justify-center overflow-auto bg-gray-50 py-10">
+            <div className="flex-1 flex justify-center overflow-auto bg-gray-50 py-6 md:py-10">
               <Document
                 file={selectedPDF.blobUrl}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
               >
-                <Page pageNumber={currentPage} scale={1.6} />
+                <Page pageNumber={currentPage} scale={window.innerWidth < 768 ? 0.8 : 1.6} />
               </Document>
             </div>
 
-            <nav className="flex justify-between items-center px-6 py-4 border-t border-gray-200 bg-white">
+            <nav className="flex justify-between items-center px-4 md:px-6 py-4 border-t border-gray-200 bg-white">
               <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
-                className="flex items-center gap-2 px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
               >
                 <ChevronLeft size={20} /> Anterior
               </button>
 
-              <div className="flex items-center gap-2 flex-col">
-                <span className="text-sm font-medium text-gray-700">
-                  Página {currentPage} de {numPages}
-                </span>
-
-                <button
-                  onClick={() => window.open(selectedPDF.blobUrl)}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold focus:outline-none focus:ring-2 focus:ring-green-600"
-                >
-                  Imprimir <FileText size={18} />
-                </button>
-              </div>
+              <span className="text-sm font-medium text-gray-700">
+                {currentPage} / {numPages}
+              </span>
 
               <button
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
+                onClick={() => setCurrentPage(p => Math.min(p + 1, numPages))}
                 disabled={currentPage === numPages}
-                className="flex items-center gap-2 px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
               >
                 Próxima <ChevronRight size={20} />
               </button>
