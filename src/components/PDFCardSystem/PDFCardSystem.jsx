@@ -46,12 +46,10 @@ export function PDFCardSystem({ mode = "public" }) {
       const all = await getPdf();
 
       if (all.length) {
-        setLastEdition(Math.max(...all.map(p => p.edicao)));
+        setLastEdition(Math.max(...all.map((p) => p.edicao)));
       }
 
-      const enriched = all
-        .map(enrichPdf)
-        .sort((a, b) => b.edicao - a.edicao); // edição mais recente primeiro
+      const enriched = all.map(enrichPdf).sort((a, b) => b.edicao - a.edicao); // edição mais recente primeiro
 
       setPdfs(enriched);
       setFilteredPdfs(enriched);
@@ -91,7 +89,7 @@ export function PDFCardSystem({ mode = "public" }) {
         edicao,
         data,
         data.getMonth() + 1,
-        data.getFullYear()
+        data.getFullYear(),
       );
 
       pdf.url = dataUrl;
@@ -99,9 +97,7 @@ export function PDFCardSystem({ mode = "public" }) {
     }
 
     const all = await getPdf();
-    const enriched = all
-      .map(enrichPdf)
-      .sort((a, b) => b.edicao - a.edicao);
+    const enriched = all.map(enrichPdf).sort((a, b) => b.edicao - a.edicao);
 
     setPdfs(enriched);
     setFilteredPdfs(enriched);
@@ -125,8 +121,8 @@ export function PDFCardSystem({ mode = "public" }) {
         (p) =>
           (p.titulo || "").toLowerCase().includes(query) ||
           (p.descricao || "").toLowerCase().includes(query) ||
-          (p.textoExtraido || "").toLowerCase().includes(query)
-      )
+          (p.textoExtraido || "").toLowerCase().includes(query),
+      ),
     );
   }
 
@@ -148,7 +144,10 @@ export function PDFCardSystem({ mode = "public" }) {
         </label>
       )}
 
-      <section id="section__pdf" className="border:none grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section
+        id="section__pdf"
+        className="border:none grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         {filteredPdfs.map((pdf) => (
           <article
             key={pdf.id}
@@ -188,8 +187,10 @@ export function PDFCardSystem({ mode = "public" }) {
         <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
           <div className="bg-white w-[90vw] h-[92vh] flex flex-col rounded-xl shadow-2xl overflow-hidden">
             <header className="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-white">
-              <h2 className="text-lg font-semibold text-[#1351B4]">Leitura Oficial</h2>
-              <button 
+              <h2 className="text-lg font-semibold text-[#1351B4]">
+                Leitura Oficial
+              </h2>
+              <button
                 onClick={() => setSelectedPDF(null)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
                 aria-label="Fechar visualização"
@@ -208,28 +209,29 @@ export function PDFCardSystem({ mode = "public" }) {
             </div>
 
             <nav className="flex justify-between items-center px-6 py-4 border-t border-gray-200 bg-white">
-              <button 
-                onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
                 className="flex items-center gap-2 px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
               >
                 <ChevronLeft size={20} /> Anterior
               </button>
 
-              <span className="text-sm font-medium text-gray-700">
-                Página {currentPage} de {numPages}
-              </span>
-            
-            
+              <div className="flex items-center gap-2 flex-col">
+                <span className="text-sm font-medium text-gray-700">
+                  Página {currentPage} de {numPages}
+                </span>
+
+                <button
+                  onClick={() => window.open(selectedPDF.blobUrl)}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold focus:outline-none focus:ring-2 focus:ring-green-600"
+                >
+                  Imprimir <FileText size={18} />
+                </button>
+              </div>
+
               <button
-                onClick={() => window.open(selectedPDF.url)}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold focus:outline-none focus:ring-2 focus:ring-green-600"
-              >
-                Abrir Original
-              </button>
-                
-              <button
-                onClick={() => setCurrentPage(p => Math.min(p + 1, numPages))}
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
                 disabled={currentPage === numPages}
                 className="flex items-center gap-2 px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
               >
