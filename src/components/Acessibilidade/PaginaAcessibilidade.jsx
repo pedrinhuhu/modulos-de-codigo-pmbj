@@ -1,8 +1,8 @@
 /**
  * @component PaginaAcessibilidade
  * @description Página estática que documenta os recursos de acessibilidade do site:
- * ajuste de fonte, alto contraste, leitor de tela, navegação por teclado e persistência
- * de configurações. Inclui link para a Ouvidoria ao final.
+ * ajuste de fonte, alto contraste, leitor de tela, VLibras (tradutor de Libras),
+ * navegação por teclado e persistência de configurações. Inclui link para a Ouvidoria ao final.
  * @returns {JSX.Element}
  */
 export function PaginaAcessibilidade() {
@@ -79,13 +79,35 @@ export function PaginaAcessibilidade() {
 
           <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
             <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
-              Como Acessar
+              VLibras - Tradutor para Língua Brasileira de Sinais
+            </h3>
+            <p className="text-gray-700 leading-relaxed mb-3">
+              O site integra o VLibras, uma ferramenta que traduz conteúdos 
+              digitais (texto, áudio e vídeo) para a Língua Brasileira de Sinais (Libras), 
+              tornando o site acessível para pessoas surdas ou com deficiência auditiva.
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-3">
+              <strong className="text-gray-800">Como usar:</strong> Localize o ícone do 
+              VLibras no canto inferior direito da página (próximo ao botão de acessibilidade). 
+              Clique sobre ele para ativar o avatar virtual que fará a tradução em Libras do 
+              conteúdo selecionado.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              <strong className="text-gray-800">Dica:</strong> Você pode selecionar qualquer 
+              texto da página e clicar no avatar para visualizar a tradução em Libras. O VLibras 
+              também permite ajustar a velocidade e o tamanho do avatar conforme sua preferência.
+            </p>
+          </li>
+
+          <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+            <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+              Como Acessar os Recursos
             </h3>
             <p className="text-gray-700 leading-relaxed">
-              Todas as funcionalidades estão disponíveis através do botão 
-              flutuante de acessibilidade (ícone de pessoa) localizado no canto 
-              inferior direito de todas as páginas. Ao clicar, um menu será 
-              aberto com todas as opções de personalização.
+              As funcionalidades de ajuste de fonte, alto contraste e leitor de tela 
+              estão disponíveis através do botão flutuante de acessibilidade (ícone de 
+              pessoa) localizado no canto inferior direito de todas as páginas. Ao clicar, 
+              um menu será aberto com todas as opções de personalização.
             </p>
           </li>
 
@@ -133,9 +155,10 @@ export function PaginaAcessibilidade() {
               Persistência de Configurações
             </h3>
             <p className="text-gray-700 leading-relaxed">
-              Todas as suas preferências de acessibilidade são salvas 
-              automaticamente e permanecerão ativas em suas próximas visitas 
-              ao site, garantindo uma experiência personalizada e contínua.
+              Todas as suas preferências de acessibilidade (tamanho de fonte, 
+              contraste e leitor de tela) são salvas automaticamente e permanecerão 
+              ativas em suas próximas visitas ao site, garantindo uma experiência 
+              personalizada e contínua.
             </p>
           </li>
         </ul>
