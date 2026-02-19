@@ -219,7 +219,15 @@ export function PDFCardSystem({ mode = "public" }) {
               <span className="text-sm font-medium text-gray-700">
                 Página {currentPage} de {numPages}
               </span>
-
+            
+            
+              <button
+                onClick={() => window.open(selectedPDF.url)}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold focus:outline-none focus:ring-2 focus:ring-green-600"
+              >
+                Abrir Original
+              </button>
+                
               <button
                 onClick={() => setCurrentPage(p => Math.min(p + 1, numPages))}
                 disabled={currentPage === numPages}

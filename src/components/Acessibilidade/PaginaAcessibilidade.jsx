@@ -1,11 +1,11 @@
 /**
- * @component PagAcess
+ * @component PaginaAcessibilidade
  * @description Página estática que documenta os recursos de acessibilidade do site:
  * ajuste de fonte, alto contraste, leitor de tela, navegação por teclado e persistência
  * de configurações. Inclui link para a Ouvidoria ao final.
  * @returns {JSX.Element}
  */
-export function PagAcess() {
+export function PaginaAcessibilidade() {
   return (
     <main className="max-w-4xl mx-auto px-6 py-12">
       <section 

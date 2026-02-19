@@ -9,7 +9,7 @@ import { Acessibilidade } from './components/Acessibilidade/Acessibilidade';
 import { Login } from './components/TelaUser/Login';
 import { TelaPDFs } from './components/TelaUser/TelaPDFs';
 import { RotaPrivada } from './routes/RotaPrivada';
-import { PagAcess } from './components/Acessibilidade/paginaAcessibilidade';
+import { PaginaAcessibilidade } from './components/Acessibilidade/PaginaAcessibilidade';
 import './App.css';
 
 /**
@@ -35,7 +35,7 @@ export function App() {
         <Route path="/" element={<PDFCardSystem />} />
         <Route path="/login" element={<Login />} />
         <Route path="/pdfs" element={<RotaPrivada><TelaPDFs /></RotaPrivada>}/>
-        <Route path="/acessibilidade" element={<PagAcess />} />
+        <Route path="/acessibilidade" element={<PaginaAcessibilidade />} />
       </Routes>
       <Acessibilidade />
       <Rodape />
