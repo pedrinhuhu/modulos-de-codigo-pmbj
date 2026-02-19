@@ -2,23 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Favicon exibido na aba do navegador -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- Garante responsividade em dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>modulos-de-codigo</title>
+
+    <title>Diário Oficial - Prefeitura Municipal de Bom Jardim</title>
   </head>
   <body>
+
+    <!-- Ponto de montagem da aplicação React -->
     <div id="root"></div>
+
+    <!-- Entrada principal da aplicação (Vite injeta os módulos aqui) -->
     <script type="module" src="/src/main.jsx"></script>
-        <div vw class="enabled">
+
+    <!-- 
+      VLibras: plugin de acessibilidade do Governo Federal
+      que traduz o conteúdo da página para Língua Brasileira de Sinais (Libras).
+      Documentação: https://vlibras.gov.br
+    -->
+    <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper>
         <div class="vw-plugin-top-wrapper"></div>
       </div>
     </div>
 
+    <!-- Carrega o script oficial do VLibras -->
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+    <!-- Inicializa o widget do VLibras apontando para o servidor oficial -->
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
+
   </body>
 </html>
