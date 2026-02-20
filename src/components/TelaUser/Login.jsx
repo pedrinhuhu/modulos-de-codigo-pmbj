@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
  * @component Login
  * @description Página de autenticação do painel administrativo.
  * Valida usuário e senha; em caso de sucesso, salva `"logado"` no
- * `localStorage` e redireciona para `/pdfs`.
+ * `localStorage` e redireciona para `/admin`.
  *
  * @remarks Credenciais hardcoded — substituir por autenticação real antes de ir para produção.
  * @returns {JSX.Element}
@@ -27,7 +27,7 @@ export function Login() {
 
     if (user === "teste" && password === "123") {
       localStorage.setItem("logado", "true");
-      navigate("/pdfs");
+      navigate("/admin");
     } else {
       alert("Credenciais inválidas!");
     }
