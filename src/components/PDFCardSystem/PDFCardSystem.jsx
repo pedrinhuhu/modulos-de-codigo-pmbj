@@ -49,21 +49,38 @@ export function PDFCardSystem() {
 
   /**
    * @function handleSearch
-   * @description Filtra `pdfs` pelo termo buscado, comparando contra
-   * `titulo`, `descricao` e `textoExtraido` (case-insensitive).
-   * @param {string} q - Termo de busca
-   * @returns {void}
+   * @description Filtra `pdfs` por texto, mês, ano e tags (case-insensitive).
+   * Todos os filtros ativos devem ser satisfeitos (AND).
+   * @param {string} q - Texto livre
+   * @param {string} mes - Mês (1–12) ou vazio para todos
+   * @param {string} ano - Ano ou vazio para todos
+   * @param {string[]} tags - Tags selecionadas ou array vazio para todas
    */
-  function handleSearch(q) {
-    const query = (q || "").toLowerCase();
+  function handleSearch(q = "", mes = "", ano = "", tags = []) {
+    // Sem filtros ativos: exibe tudo
+    if (!q && !mes && !ano && tags.length === 0) {
+      setFilteredPdfs(pdfs);
+      return;
+    }
+
+    const query = q.toLowerCase();
 
     setFilteredPdfs(
-      pdfs.filter(
-        (p) =>
+      pdfs.filter((p) => {
+        const data = new Date(p.createdAt);
+
+        const textoOk =
+          !query ||
           (p.titulo || "").toLowerCase().includes(query) ||
           (p.descricao || "").toLowerCase().includes(query) ||
-          (p.textoExtraido || "").toLowerCase().includes(query)
-      )
+          (p.textoExtraido || "").toLowerCase().includes(query);
+
+        const mesOk = !mes || data.getMonth() + 1 === Number(mes);
+        const anoOk = !ano || data.getFullYear() === Number(ano);
+        const tagsOk = tags.length === 0 || tags.every((t) => (p.tags || []).includes(t));
+
+        return textoOk && mesOk && anoOk && tagsOk;
+      })
     );
   }
 
