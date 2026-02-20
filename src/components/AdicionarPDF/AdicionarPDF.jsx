@@ -48,7 +48,6 @@ const TAGS = {
  * @description Seção de upload de PDFs do Diário Oficial.
  * Permite selecionar arquivos via drag & drop ou clique, informar metadados
  * (edição e data) e classificar com tags antes de confirmar a publicação.
- * Toda a lógica de storage é encapsulada aqui.
  *
  * @param {Object} props
  * @param {number} props.lastEdition - Número da última edição cadastrada
@@ -57,31 +56,16 @@ const TAGS = {
  * @returns {JSX.Element}
  */
 export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
-  /** @type {[File[], Function]} Arquivos PDF selecionados pelo usuário */
   const [files, setFiles] = useState([]);
-
-  /** @type {[string[], Function]} IDs das tags selecionadas */
   const [selectedTags, setSelectedTags] = useState([]);
-
-  /** @type {[boolean, Function]} Indica se o usuário está arrastando arquivos sobre a zona de drop */
   const [dragging, setDragging] = useState(false);
-
-  /** @type {[string, Function]} Número da edição informado manualmente */
   const [edicao, setEdicao] = useState("");
-
-  /** @type {[string, Function]} Data de publicação informada manualmente */
   const [data, setData] = useState("");
-
-  /** @type {[boolean, Function]} Indica se o upload foi concluído com sucesso */
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fileRef = useRef();
 
-  /**
-   * @function addFiles
-   * @description Filtra arquivos por tipo PDF e evita duplicatas pelo nome.
-   * @param {FileList|File[]} newFiles
-   */
   const addFiles = (newFiles) => {
     const pdfs = Array.from(newFiles).filter((f) => f.type === "application/pdf");
     setFiles((prev) => {
@@ -90,23 +74,21 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
     });
   };
 
-  /** @function removeFile - Remove um arquivo da lista pelo nome */
   const removeFile = (name) => setFiles((prev) => prev.filter((f) => f.name !== name));
 
-  /** @function toggleTag - Adiciona ou remove uma tag da seleção pelo ID */
   const toggleTag = (id) => {
     setSelectedTags((prev) =>
       prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
     );
   };
 
-  /** @function resetUpload - Limpa todos os campos do formulário */
   const resetUpload = () => {
     setFiles([]);
     setSelectedTags([]);
     setEdicao("");
     setData("");
     setUploadSuccess(false);
+    setLoading(false);
   };
 
   const onDrop = useCallback((e) => {
@@ -122,53 +104,68 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
 
   /**
    * @function handleSubmit
-   * @description Processa cada arquivo PDF: incrementa a edição, converte para base64,
-   * extrai o texto, associa as tags e persiste no storage via `setPdf`.
-   * Ao final, chama `onUploadSuccess` com a lista atualizada.
-   * @returns {Promise<void>}
+   * @description Processa cada arquivo PDF, salva no storage e notifica o pai.
    */
   async function handleSubmit() {
-    if (!canConfirm) return;
+    if (!canConfirm || loading) return;
 
-    let edicaoNum = lastEdition;
+    setLoading(true);
 
-    for (const file of files) {
-      if (file.type !== "application/pdf") continue;
-      edicaoNum++;
+    try {
+      let edicaoNum = lastEdition;
 
-      const dataUrl = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(file);
-      });
+      for (const file of files) {
+        if (file.type !== "application/pdf") continue;
+        edicaoNum++;
 
-      const texto = await extractTextFromPDF(dataUrl);
-      const createdAt = data ? new Date(data) : new Date();
+        // Converte o arquivo para base64
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error("Falha ao ler o arquivo"));
+          reader.readAsDataURL(file);
+        });
 
-      const pdf = new PDF(
-        file.name,
-        edicao ? `Edição Nº ${edicao}` : `Edição Nº ${edicaoNum}`,
-        null,
-        texto,
-        edicao ? Number(edicao) : edicaoNum,
-        createdAt,
-        createdAt.getMonth() + 1,
-        createdAt.getFullYear()
-      );
+        // Extrai texto para pesquisa
+        const texto = await extractTextFromPDF(dataUrl);
 
-      pdf.url = dataUrl;
-      pdf.tags = selectedTags;
-      await setPdf(pdf);
+        // Usa a data informada ou a data atual
+        const dataPublicacao = data ? new Date(`${data}T12:00:00`) : new Date();
+
+        // Cria o objeto PDF com os 6 parâmetros do construtor
+        const pdf = new PDF(
+          file.name,
+          edicao ? `Edição Nº ${edicao}` : `Edição Nº ${edicaoNum}`,
+          dataUrl,
+          texto,
+          edicao ? Number(edicao) : edicaoNum,
+          dataPublicacao
+        );
+
+        pdf.tags = selectedTags;
+
+        // Sobrescreve o createdAt com a data informada pelo usuário
+        if (data) {
+          pdf.createdAt = dataPublicacao.toISOString();
+        }
+
+        await setPdf(pdf);
+      }
+
+      const all = await getPdf();
+      const enrichedPdfs = all
+        .map(enrichPdf)
+        .sort((a, b) => b.edicao - a.edicao);
+
+      onUploadSuccess({ enrichedPdfs, lastEdicao: edicaoNum });
+      setUploadSuccess(true);
+      setTimeout(resetUpload, 2500);
+
+    } catch (err) {
+      console.error("Erro ao publicar PDF:", err);
+      alert("Ocorreu um erro ao publicar. Tente novamente.");
+      setLoading(false);
     }
-
-    const all = await getPdf();
-    const enrichedPdfs = all
-      .map(enrichPdf)
-      .sort((a, b) => b.edicao - a.edicao);
-
-    onUploadSuccess({ enrichedPdfs, lastEdicao: edicaoNum });
-    setUploadSuccess(true);
-    setTimeout(resetUpload, 2500);
   }
 
   return (
@@ -176,7 +173,6 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
       className="mb-8 bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
       aria-label="Seção de adição de publicação em PDF"
     >
-      {/* Cabeçalho */}
       <header className="px-6 py-4 border-b border-gray-100">
         <h2 className="text-base font-semibold text-[#1351B4]">Adicionar Publicação</h2>
         <p className="text-xs text-gray-400 mt-0.5">
@@ -184,12 +180,10 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
         </p>
       </header>
 
-      {/* Feedback de sucesso */}
       {uploadSuccess ? (
         <div
           className="flex flex-col items-center justify-center gap-3 py-12"
           aria-live="polite"
-          aria-label="Publicação realizada com sucesso"
         >
           <CheckCircle size={44} className="text-green-500" aria-hidden="true" />
           <p className="text-sm font-semibold text-gray-600">Publicação realizada com sucesso!</p>
@@ -197,7 +191,7 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
       ) : (
         <div className="px-6 py-5 flex flex-col gap-5">
 
-          {/* Metadados: edição e data */}
+          {/* Metadados */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label htmlFor="upload-edicao" className="block text-sm font-semibold text-gray-600 mb-1">
@@ -210,7 +204,6 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
                 value={edicao}
                 onChange={(e) => setEdicao(e.target.value)}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4] bg-gray-50"
-                aria-label="Número da edição do Diário Oficial"
               />
             </div>
             <div>
@@ -223,7 +216,6 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
                 value={data}
                 onChange={(e) => setData(e.target.value)}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4] bg-gray-50"
-                aria-label="Data de publicação do Diário Oficial"
               />
             </div>
           </div>
@@ -241,16 +233,9 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition
-                ${dragging
-                  ? "border-[#1351B4] bg-blue-50"
-                  : "border-gray-300 hover:border-[#1351B4] bg-gray-50"
-                }`}
+                ${dragging ? "border-[#1351B4] bg-blue-50" : "border-gray-300 hover:border-[#1351B4] bg-gray-50"}`}
             >
-              <Upload
-                size={28}
-                className={`mx-auto mb-2 ${dragging ? "text-[#1351B4]" : "text-gray-400"}`}
-                aria-hidden="true"
-              />
+              <Upload size={28} className={`mx-auto mb-2 ${dragging ? "text-[#1351B4]" : "text-gray-400"}`} aria-hidden="true" />
               <p className="text-sm font-semibold text-gray-600">
                 {dragging ? "Solte os arquivos aqui" : "Arraste PDFs ou clique para selecionar"}
               </p>
@@ -266,19 +251,13 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
               />
             </div>
 
-            {/* Lista de arquivos selecionados */}
             {files.length > 0 && (
-              <ul className="mt-3 flex flex-col gap-2" aria-label="Arquivos selecionados para upload">
+              <ul className="mt-3 flex flex-col gap-2" aria-label="Arquivos selecionados">
                 {files.map((file) => (
-                  <li
-                    key={file.name}
-                    className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5"
-                  >
+                  <li key={file.name} className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5">
                     <FileText size={18} className="text-[#1351B4] shrink-0" aria-hidden="true" />
                     <span className="flex-1 text-sm text-gray-700 truncate">{file.name}</span>
-                    <span className="text-xs text-gray-400 shrink-0">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
-                    </span>
+                    <span className="text-xs text-gray-400 shrink-0">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                     <button
                       onClick={() => removeFile(file.name)}
                       className="text-gray-300 hover:text-red-500 transition focus:outline-none focus:ring-2 focus:ring-[#1351B4] rounded"
@@ -292,7 +271,7 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
             )}
           </div>
 
-          {/* Seleção de tags por grupo */}
+          {/* Tags */}
           <div>
             <p className="text-sm font-semibold text-gray-600 mb-3">
               Tags de Classificação
@@ -302,25 +281,21 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
                 </span>
               )}
             </p>
-
-            <div className="flex flex-col gap-4" role="group" aria-label="Grupos de tags para classificação">
+            <div className="flex flex-col gap-4" role="group" aria-label="Grupos de tags">
               {Object.entries(TAGS).map(([group, tags]) => (
                 <div key={group}>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5">{group}</p>
-                  <div className="flex flex-wrap gap-2" role="group" aria-label={`Tags do grupo ${group}`}>
+                  <div className="flex flex-wrap gap-2">
                     {tags.map((tag) => {
                       const active = selectedTags.includes(tag.id);
                       return (
                         <button
                           key={tag.id}
+                          type="button"
                           onClick={() => toggleTag(tag.id)}
                           aria-pressed={active}
-                          aria-label={`Tag ${tag.label}${active ? ", selecionada" : ""}`}
                           className={`px-3 py-1 rounded-full text-xs font-semibold border transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]
-                            ${active
-                              ? "bg-[#1351B4] text-white border-[#1351B4]"
-                              : "bg-white text-gray-600 border-gray-300 hover:border-[#1351B4] hover:text-[#1351B4]"
-                            }`}
+                            ${active ? "bg-[#1351B4] text-white border-[#1351B4]" : "bg-white text-gray-600 border-gray-300 hover:border-[#1351B4] hover:text-[#1351B4]"}`}
                         >
                           {tag.label}
                         </button>
@@ -332,21 +307,21 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
             </div>
           </div>
 
-          {/* Rodapé com ações */}
-          <footer className="flex items-center justify-between pt-2 border-t border-gray-100">
+          {/* Ações */}
+          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
             <p className="text-xs text-gray-400">
               {files.length} arquivo{files.length !== 1 ? "s" : ""} · {selectedTags.length} tag{selectedTags.length !== 1 ? "s" : ""}
             </p>
             <button
+              type="button"
               onClick={handleSubmit}
-              disabled={!canConfirm}
+              disabled={!canConfirm || loading}
               className="bg-[#1351B4] text-white px-6 py-2.5 rounded-lg hover:bg-[#0c3c8c] cursor-pointer transition font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
               aria-label="Confirmar upload e publicar os arquivos selecionados"
-              aria-disabled={!canConfirm}
             >
-              Publicar
+              {loading ? "Publicando..." : "Publicar"}
             </button>
-          </footer>
+          </div>
 
         </div>
       )}
