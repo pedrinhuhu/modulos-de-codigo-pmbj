@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FileText, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { FileText, X, ChevronLeft, ChevronRight, Printer } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -164,30 +164,44 @@ export function PDFCardSystem() {
             </div>
 
             <nav
-              className="flex justify-between items-center px-4 md:px-6 py-4 border-t border-gray-200 bg-white"
+              className="flex flex-col items-center gap-3 px-4 md:px-6 py-4 border-t border-gray-200 bg-white"
               aria-label="Navegação entre páginas do PDF"
             >
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
-                aria-label="Ir para a página anterior"
-              >
-                <ChevronLeft size={20} aria-hidden="true" /> Anterior
-              </button>
+              {/* Controles de paginação */}
+              <div className="flex justify-between items-center w-full">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+                  aria-label="Ir para a página anterior"
+                >
+                  <ChevronLeft size={20} aria-hidden="true" /> Anterior
+                </button>
 
-              <span className="text-sm font-medium text-gray-700" aria-live="polite" aria-atomic="true">
-                {currentPage} / {numPages}
-              </span>
+                <span className="text-sm font-medium text-gray-700" aria-live="polite" aria-atomic="true">
+                  {currentPage} / {numPages}
+                </span>
 
-              <button
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
-                disabled={currentPage === numPages}
-                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
-                aria-label="Ir para a próxima página"
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
+                  disabled={currentPage === numPages}
+                  className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+                  aria-label="Ir para a próxima página"
+                >
+                  Próxima <ChevronRight size={20} aria-hidden="true" />
+                </button>
+              </div>
+
+              {/* Botão de download / impressão do PDF */}
+              <a
+                href={selectedPDF.blobUrl}
+                download={selectedPDF.titulo || "diario-oficial.pdf"}
+                className="flex items-center gap-2 px-5 py-2 bg-[#1351B4] text-white rounded-lg hover:bg-[#0c3c8c] transition font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+                aria-label="Baixar ou imprimir o PDF desta edição"
               >
-                Próxima <ChevronRight size={20} aria-hidden="true" />
-              </button>
+                <Printer size={17} aria-hidden="true" />
+                Imprimir / Baixar
+              </a>
             </nav>
           </div>
         </div>
