@@ -34,7 +34,7 @@ const TAGS = {
     { id: "licenca", label: "#licença" },
     { id: "concurso", label: "#concurso" },
   ],
-  "Licitações": [
+  Licitações: [
     { id: "pregao", label: "#pregão" },
     { id: "registro-precos", label: "#registro-de-preços" },
     { id: "dispensa", label: "#dispensa" },
@@ -67,18 +67,21 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
   const fileRef = useRef();
 
   const addFiles = (newFiles) => {
-    const pdfs = Array.from(newFiles).filter((f) => f.type === "application/pdf");
+    const pdfs = Array.from(newFiles).filter(
+      (f) => f.type === "application/pdf",
+    );
     setFiles((prev) => {
       const names = new Set(prev.map((f) => f.name));
       return [...prev, ...pdfs.filter((f) => !names.has(f.name))];
     });
   };
 
-  const removeFile = (name) => setFiles((prev) => prev.filter((f) => f.name !== name));
+  const removeFile = (name) =>
+    setFiles((prev) => prev.filter((f) => f.name !== name));
 
   const toggleTag = (id) => {
     setSelectedTags((prev) =>
-      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id],
     );
   };
 
@@ -97,10 +100,15 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
     addFiles(e.dataTransfer.files);
   }, []);
 
-  const onDragOver = (e) => { e.preventDefault(); setDragging(true); };
+  const onDragOver = (e) => {
+    e.preventDefault();
+    setDragging(true);
+  };
   const onDragLeave = () => setDragging(false);
 
   const canConfirm = files.length > 0 && selectedTags.length > 0;
+
+  const [erro, setErro] = useState("");
 
   /**
    * @function handleSubmit
@@ -139,7 +147,7 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
           dataUrl,
           texto,
           edicao ? Number(edicao) : edicaoNum,
-          dataPublicacao
+          dataPublicacao,
         );
 
         pdf.tags = selectedTags;
@@ -160,10 +168,9 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
       onUploadSuccess({ enrichedPdfs, lastEdicao: edicaoNum });
       setUploadSuccess(true);
       setTimeout(resetUpload, 2500);
-
     } catch (err) {
       console.error("Erro ao publicar PDF:", err);
-      alert("Ocorreu um erro ao publicar. Tente novamente.");
+      setErro("Ocorreu um erro ao publicar. Tente novamente.");
       setLoading(false);
     }
   }
@@ -174,9 +181,12 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
       aria-label="Seção de adição de publicação em PDF"
     >
       <header className="px-6 py-4 border-b border-gray-100">
-        <h2 className="text-base font-semibold text-[#1351B4]">Adicionar Publicação</h2>
+        <h2 className="text-base font-semibold text-[#1351B4]">
+          Adicionar Publicação
+        </h2>
         <p className="text-xs text-gray-400 mt-0.5">
-          Faça upload de PDFs do Diário Oficial e classifique com as tags correspondentes.
+          Faça upload de PDFs do Diário Oficial e classifique com as tags
+          correspondentes.
         </p>
       </header>
 
@@ -185,16 +195,24 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
           className="flex flex-col items-center justify-center gap-3 py-12"
           aria-live="polite"
         >
-          <CheckCircle size={44} className="text-green-500" aria-hidden="true" />
-          <p className="text-sm font-semibold text-gray-600">Publicação realizada com sucesso!</p>
+          <CheckCircle
+            size={44}
+            className="text-green-500"
+            aria-hidden="true"
+          />
+          <p className="text-sm font-semibold text-gray-600">
+            Publicação realizada com sucesso!
+          </p>
         </div>
       ) : (
         <div className="px-6 py-5 flex flex-col gap-5">
-
           {/* Metadados */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="upload-edicao" className="block text-sm font-semibold text-gray-600 mb-1">
+              <label
+                htmlFor="upload-edicao"
+                className="block text-sm font-semibold text-gray-600 mb-1"
+              >
                 Nº da Edição
               </label>
               <input
@@ -207,7 +225,10 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
               />
             </div>
             <div>
-              <label htmlFor="upload-data" className="block text-sm font-semibold text-gray-600 mb-1">
+              <label
+                htmlFor="upload-data"
+                className="block text-sm font-semibold text-gray-600 mb-1"
+              >
                 Data de Publicação
               </label>
               <input
@@ -222,7 +243,9 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
 
           {/* Zona de drag & drop */}
           <div>
-            <p className="text-sm font-semibold text-gray-600 mb-2">Arquivos PDF</p>
+            <p className="text-sm font-semibold text-gray-600 mb-2">
+              Arquivos PDF
+            </p>
             <div
               role="button"
               tabIndex={0}
@@ -235,11 +258,19 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
               className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition
                 ${dragging ? "border-[#1351B4] bg-blue-50" : "border-gray-300 hover:border-[#1351B4] bg-gray-50"}`}
             >
-              <Upload size={28} className={`mx-auto mb-2 ${dragging ? "text-[#1351B4]" : "text-gray-400"}`} aria-hidden="true" />
+              <Upload
+                size={28}
+                className={`mx-auto mb-2 ${dragging ? "text-[#1351B4]" : "text-gray-400"}`}
+                aria-hidden="true"
+              />
               <p className="text-sm font-semibold text-gray-600">
-                {dragging ? "Solte os arquivos aqui" : "Arraste PDFs ou clique para selecionar"}
+                {dragging
+                  ? "Solte os arquivos aqui"
+                  : "Arraste PDFs ou clique para selecionar"}
               </p>
-              <p className="text-xs text-gray-400 mt-1">Apenas arquivos .pdf • Múltiplos permitidos</p>
+              <p className="text-xs text-gray-400 mt-1">
+                Apenas arquivos .pdf • Múltiplos permitidos
+              </p>
               <input
                 ref={fileRef}
                 type="file"
@@ -252,12 +283,26 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
             </div>
 
             {files.length > 0 && (
-              <ul className="mt-3 flex flex-col gap-2" aria-label="Arquivos selecionados">
+              <ul
+                className="mt-3 flex flex-col gap-2"
+                aria-label="Arquivos selecionados"
+              >
                 {files.map((file) => (
-                  <li key={file.name} className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5">
-                    <FileText size={18} className="text-[#1351B4] shrink-0" aria-hidden="true" />
-                    <span className="flex-1 text-sm text-gray-700 truncate">{file.name}</span>
-                    <span className="text-xs text-gray-400 shrink-0">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                  <li
+                    key={file.name}
+                    className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5"
+                  >
+                    <FileText
+                      size={18}
+                      className="text-[#1351B4] shrink-0"
+                      aria-hidden="true"
+                    />
+                    <span className="flex-1 text-sm text-gray-700 truncate">
+                      {file.name}
+                    </span>
+                    <span className="text-xs text-gray-400 shrink-0">
+                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                    </span>
                     <button
                       onClick={() => removeFile(file.name)}
                       className="text-gray-300 hover:text-red-500 transition focus:outline-none focus:ring-2 focus:ring-[#1351B4] rounded"
@@ -277,14 +322,21 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
               Tags de Classificação
               {selectedTags.length > 0 && (
                 <span className="ml-2 bg-[#1351B4] text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                  {selectedTags.length} selecionada{selectedTags.length > 1 ? "s" : ""}
+                  {selectedTags.length} selecionada
+                  {selectedTags.length > 1 ? "s" : ""}
                 </span>
               )}
             </p>
-            <div className="flex flex-col gap-4" role="group" aria-label="Grupos de tags">
+            <div
+              className="flex flex-col gap-4"
+              role="group"
+              aria-label="Grupos de tags"
+            >
               {Object.entries(TAGS).map(([group, tags]) => (
                 <div key={group}>
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5">{group}</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5">
+                    {group}
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {tags.map((tag) => {
                       const active = selectedTags.includes(tag.id);
@@ -307,10 +359,21 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
             </div>
           </div>
 
+          {/* Mensagem de erro */}
+          {erro && (
+            <p
+              role="alert"
+              className="text-red-600 text-sm bg-red-50 border border-red-200 rounded px-3 py-2"
+            >
+              {erro}
+            </p>
+          )}
+
           {/* Ações */}
           <div className="flex items-center justify-between pt-2 border-t border-gray-100">
             <p className="text-xs text-gray-400">
-              {files.length} arquivo{files.length !== 1 ? "s" : ""} · {selectedTags.length} tag{selectedTags.length !== 1 ? "s" : ""}
+              {files.length} arquivo{files.length !== 1 ? "s" : ""} ·{" "}
+              {selectedTags.length} tag{selectedTags.length !== 1 ? "s" : ""}
             </p>
             <button
               type="button"
@@ -322,7 +385,6 @@ export function AdicionarPDF({ lastEdition, onUploadSuccess }) {
               {loading ? "Publicando..." : "Publicar"}
             </button>
           </div>
-
         </div>
       )}
     </section>

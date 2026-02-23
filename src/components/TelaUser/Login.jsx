@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
  */
 export function Login() {
   const navigate = useNavigate();
+  const [erro, setErro] = useState("");
 
   /**
    * @function handleLogin
@@ -29,7 +30,7 @@ export function Login() {
       localStorage.setItem("logado", "true");
       navigate("/admin");
     } else {
-      alert("Credenciais inválidas!");
+      setErro("Usuário ou senha inválidos.");
     }
   }
 
@@ -49,6 +50,15 @@ export function Login() {
         >
           Acesso ao Sistema
         </h1>
+
+        {erro && (
+          <p
+            role="alert"
+            className="text-red-600 text-sm text-center bg-red-50 border border-red-200 rounded px-3 py-2"
+          >
+            {erro}
+          </p>
+        )}
 
         <div className="flex flex-col gap-1">
           <label htmlFor="user" className="font-medium">
