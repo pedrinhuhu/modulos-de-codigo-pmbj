@@ -50,17 +50,17 @@ export function BarraTopo() {
         {/* Menu desktop */}
         <ul className="hidden md:flex flex-row gap-8 items-center">
           <li>
-            <a href={linkOuvidoria} target='_blank' className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]" aria-label="Acessar página da Ouvidoria">
+            <a href={linkOuvidoria} target='_blank' className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]" aria-label="Acessar página da Ouvidoria (abre em nova aba)">
               <Headset size={18} aria-hidden="true" /> Ouvidoria
             </a>
           </li>
           <li>
-            <a href={linkTransparencia} target='_blank' className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]">
+            <a href={linkTransparencia} target='_blank' className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]" aria-label="Ir para página de transparência (abre em nova aba)">
               <Info size={18} aria-hidden="true" /> Transparência
             </a>
           </li>
           <li>
-            <a href={linkAcessibilidade} className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]" aria-label="Ir para menu de acessibilidade">
+            <a href={linkAcessibilidade} className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]" aria-label="Ir para menu de acessibilidade (abre em nova aba)">
               <HeartHandshake size={18} aria-hidden="true" /> Acessibilidade
             </a>
           </li>
@@ -75,9 +75,9 @@ export function BarraTopo() {
       {/* Menu mobile */}
       {menuOpen && (
         <ul className="md:hidden flex flex-col mt-2 gap-1">
-          <li><a href={linkOuvidoria} target='_blank' className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition" aria-label="Acessar página da Ouvidoria"><Headset size={18} aria-hidden="true" /> Ouvidoria</a></li>
-          <li><a href={linkTransparencia} target='_blank' className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition"><Info size={18} aria-hidden="true" /> Transparência</a></li>
-          <li><a href={linkAcessibilidade} className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition" aria-label="Ir para menu de acessibilidade"><HeartHandshake size={18} aria-hidden="true" /> Acessibilidade</a></li>
+          <li><a href={linkOuvidoria} target='_blank' className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition" aria-label="Acessar página da Ouvidoria (abre em nova aba)"><Headset size={18} aria-hidden="true" /> Ouvidoria</a></li>
+          <li><a href={linkTransparencia} target='_blank' className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition"><Info size={18} aria-label="Ir para página de transparência (abre em nova aba)" aria-hidden="true" /> Transparência</a></li>
+          <li><a href={linkAcessibilidade} className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition" aria-label="Ir para menu de acessibilidade (abre em nova aba)"><HeartHandshake size={18} aria-hidden="true" /> Acessibilidade</a></li>
           <li><a href={linkPesquisa} className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition" aria-label="Ir para campo de pesquisa"><Search size={18} aria-hidden="true" /> Pesquisar</a></li>
         </ul>
       )}
