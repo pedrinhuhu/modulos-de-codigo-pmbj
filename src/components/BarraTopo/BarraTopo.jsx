@@ -78,27 +78,15 @@ export function BarraTopo() {
             </a>
           </li>
 
-          {/* Menu principal — accessKey 2 */}
-          <li>
-            <a
-              href="#menu-principal"
-              accessKey="2"
-              aria-label="Ir para menu principal [2]"
-              className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]"
-            >
-              Menu [2]
-            </a>
-          </li>
-
-          {/* Pesquisar — accessKey 3 */}
+          {/* Pesquisar — accessKey 2 */}
           <li>
             <a
               href={linkPesquisa}
-              accessKey="3"
-              aria-label="Ir para campo de pesquisa [3]"
+              accessKey="2"
+              aria-label="Ir para campo de pesquisa"
               className="flex items-center gap-2 tracking-normal text-sm font-normal focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-3 py-2 transition hover:bg-[#0c3c8c]"
             >
-              <Search size={18} aria-hidden="true" /> Pesquisar [3]
+              <Search size={18} aria-hidden="true" /> Pesquisar
             </a>
           </li>
         </ul>
@@ -139,27 +127,15 @@ export function BarraTopo() {
             </a>
           </li>
 
-          {/* Menu principal — accessKey 2 */}
-          <li>
-            <a
-              href="#menu-principal"
-              accessKey="2"
-              aria-label="Ir para menu principal [2]"
-              className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition"
-            >
-              Menu [2]
-            </a>
-          </li>
-
-          {/* Pesquisar — accessKey 3 */}
+          {/* Pesquisar — accessKey 2 */}
           <li>
             <a
               href={linkPesquisa}
-              accessKey="3"
-              aria-label="Ir para campo de pesquisa [3]"
+              accessKey="2"
+              aria-label="Ir para campo de pesquisa [2]"
               className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg hover:bg-[#0c3c8c] transition"
             >
-              <Search size={18} aria-hidden="true" /> Pesquisar [3]
+              <Search size={18} aria-hidden="true" /> Pesquisar [2]
             </a>
           </li>
 
