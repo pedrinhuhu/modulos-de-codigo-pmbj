@@ -1,28 +1,12 @@
+import { useState } from "react";           {/* ← adicionar */}
 import { useNavigate } from "react-router-dom";
 
-/**
- * @component Login
- * @description Página de autenticação do painel administrativo.
- * Valida usuário e senha; em caso de sucesso, salva `"logado"` no
- * `localStorage` e redireciona para `/admin`.
- *
- * @remarks Credenciais hardcoded — substituir por autenticação real antes de ir para produção.
- * @returns {JSX.Element}
- */
 export function Login() {
   const navigate = useNavigate();
   const [erro, setErro] = useState("");
 
-  /**
-   * @function handleLogin
-   * @description Lê `user` e `password` do formulário e valida contra
-   * credenciais fixas. Redireciona em caso de sucesso ou exibe alerta em falha.
-   * @param {React.FormEvent<HTMLFormElement>} e
-   * @returns {void}
-   */
   function handleLogin(e) {
     e.preventDefault();
-
     const user = e.target.user.value;
     const password = e.target.password.value;
 
@@ -60,37 +44,42 @@ export function Login() {
           </p>
         )}
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="user" className="font-medium">
-            Usuário
-          </label>
-          <input
-            id="user"
-            type="text"
-            name="user"
-            placeholder="Usuario"
-            autoComplete="username"
-            aria-required="true"
-            className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-            required
-          />
-        </div>
+        <fieldset className="flex flex-col gap-5 border-none p-0 m-0">  {/* ← adicionar */}
+          <legend className="sr-only">Credenciais de acesso</legend>    {/* ← adicionar */}
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="password" className="font-medium">
-            Senha
-          </label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="Senha"
-            autoComplete="current-password"
-            aria-required="true"
-            className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-            required
-          />
-        </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="user" className="font-medium">
+              Usuário
+            </label>
+            <input
+              id="user"
+              type="text"
+              name="user"
+              placeholder="Usuario"
+              autoComplete="username"
+              aria-required="true"
+              className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="password" className="font-medium">
+              Senha
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Senha"
+              autoComplete="current-password"
+              aria-required="true"
+              className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+              required
+            />
+          </div>
+
+        </fieldset>                                                       {/* ← fechar */}
 
         <button
           type="submit"
