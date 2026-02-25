@@ -147,7 +147,7 @@ export function Pesquisa({ onSearch }) {
             <button
               type="button"
               onClick={limparTudo}
-              className="w-full md:w-auto px-8 py-3 text-sm font-semibold rounded-lg border border-gray-300 text-gray-400 hover:border-red-400 hover:text-red-500 transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
+              className="w-full md:w-auto px-8 py-3 text-sm font-semibold rounded-lg border border-gray-300 text-gray-600 hover:border-red-400 hover:text-red-500 transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]"
               aria-label="Remover todos os filtros"
             >
               Limpar tudo
@@ -179,7 +179,7 @@ export function Pesquisa({ onSearch }) {
           aria-label="Filtro avançado por tags"
         >
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-semibold text-gray-400">
+            <p className="text-sm font-semibold text-gray-600">
               Filtrar por tags
             </p>
             {selectedTags.length > 0 && (
@@ -213,7 +213,7 @@ export function Pesquisa({ onSearch }) {
                         className={`px-3 py-1 rounded-full text-xs font-semibold border transition focus:outline-none focus:ring-2 focus:ring-[#1351B4]
                           ${active
                             ? "bg-[#1351B4] text-white border-[#1351B4]"
-                            : "bg-white text-gray-400 border-gray-300 hover:border-[#1351B4] hover:text-[#1351B4]"
+                            : "bg-white text-gray-600 border-gray-300 hover:border-[#1351B4] hover:text-[#1351B4]"
                           }`}
                       >
                         {tag.label}
