@@ -184,6 +184,70 @@ export function PaginaAcessibilidade() {
                 uma experiência personalizada e contínua.
               </p>
             </li>
+
+            <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+              <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+                Breadcrumb (Navegação de Localização)
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                O breadcrumb é uma trilha de navegação exibida no topo das
+                páginas que indica sua localização atual dentro do site. Ele
+                permite voltar rapidamente a seções anteriores sem precisar usar
+                o botão de voltar do navegador, facilitando a orientação e a
+                navegação entre páginas.
+              </p>
+            </li>
+
+            <li className="bg-gray-50 rounded-lg p-6 border-l-4 border-[#1351B4]">
+              <h3 className="text-lg font-semibold text-[#1351B4] mb-2">
+                Teclas de Atalho de Acesso Rápido (AccessKey)
+              </h3>
+              <p className="text-gray-700 leading-relaxed mb-3">
+                O site disponibiliza atalhos de acesso rápido que permitem
+                navegar diretamente para áreas específicas da página sem
+                percorrer todo o conteúdo. Para utilizá-los, pressione a
+                combinação de teclas correspondente ao seu navegador e sistema
+                operacional:
+              </p>
+              <ul className="space-y-2 ml-4 mb-3">
+                <li className="text-gray-700">
+                  <strong className="text-gray-800">Windows/Linux (Chrome, Edge):</strong>{" "}
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">
+                    Alt
+                  </kbd>{" "}
+                  +{" "}
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">
+                    Shift
+                  </kbd>{" "}
+                  + tecla de atalho
+                </li>
+                <li className="text-gray-700">
+                  <strong className="text-gray-800">Windows/Linux (Firefox):</strong>{" "}
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">
+                    Alt
+                  </kbd>{" "}
+                  + tecla de atalho
+                </li>
+                <li className="text-gray-700">
+                  <strong className="text-gray-800">macOS (todos os navegadores):</strong>{" "}
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">
+                    Control
+                  </kbd>{" "}
+                  +{" "}
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-sm font-mono">
+                    Option
+                  </kbd>{" "}
+                  + tecla de atalho
+                </li>
+              </ul>
+              <p className="text-gray-700 leading-relaxed">
+                Os atalhos disponíveis neste site seguem o padrão do governo
+                federal: <strong className="text-gray-800">1</strong> para ir ao
+                menu de navegação, <strong className="text-gray-800">2</strong>{" "}
+                para ir ao conteúdo principal e{" "}
+                <strong className="text-gray-800">3</strong> para ir ao rodapé.
+              </p>
+            </li>
           </ul>
         </section>
 
@@ -200,8 +264,8 @@ export function PaginaAcessibilidade() {
           <p className="text-gray-700 leading-relaxed">
             Se você encontrar qualquer barreira de acessibilidade ou tiver
             sugestões de melhoria, entre em contato através da nossa{" "}
-            <a
-              href="https://bomjardim1.websiteseguro.com/ouvidoria/?pagina=fale_conosco_ouvidoria.php"
+            
+            <a href="https://bomjardim1.websiteseguro.com/ouvidoria/?pagina=fale_conosco_ouvidoria.php"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#1351B4] font-semibold underline hover:text-[#0c3c8c] transition focus:outline-none focus:ring-2 focus:ring-[#1351B4] rounded"
