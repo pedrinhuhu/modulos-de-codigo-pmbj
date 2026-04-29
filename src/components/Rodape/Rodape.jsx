@@ -98,9 +98,9 @@ export function Rodape() {
       </p>
       <p
         className="text-sm mt-2 opacity-90"
-        aria-label="Desenvolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim RJ"
+        aria-label="Desenvolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim-RJ"
       >
-        Desenvolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim RJ
+        Desenvolvido pela equipe de TIC da Prefeitura Municipal de Bom Jardim-RJ
       </p>
     </footer>
   );
